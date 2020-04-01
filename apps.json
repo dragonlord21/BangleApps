@@ -12,6 +12,31 @@
     ],
     "sortorder" : -10
   },
+  { "id": "moonphase",
+    "name": "Moonphase",
+    "icon": "app.png",
+    "version":"0.01",
+    "description": "Shows current moon phase. Currently only with fixed coordinates (northern hemisphere).",
+    "tags": "",
+    "allow_emulator":true,
+    "storage": [
+      {"name":"moonphase.app.js","url":"app.js"},
+      {"name":"moonphase.img","url":"app-icon.js","evaluate":true}
+    ]
+  },
+  { "id": "daysl",
+    "name": "Days left",
+    "icon": "app.png",
+    "version":"0.01",
+    "description": "Shows you the days left until a certain date. Date can be set with a settings app and is written to a file.",
+    "tags": "",
+    "allow_emulator":false,
+    "storage": [
+        {"name":"daysl.app.js","url":"app.js"},
+        {"name":"daysl.img","url":"app-icon.js","evaluate":true},
+        {"name":"daysl.wid.js","url":"widget.js"}
+    ]
+  },
   { "id": "launch",
     "name": "Default Launcher",
     "shortName":"Launcher",
@@ -866,6 +891,20 @@
       {"name":"marioclock.img","url":"marioclock-icon.js","evaluate":true}
     ]
   },
+  { "id": "cliock",
+    "name": "Commandline-Clock",
+    "shortName":"CLI-Clock",
+    "icon": "app.png",
+    "version":"0.07",
+    "description": "Simple CLI-Styled Clock",
+    "tags": "clock,cli,command,bash,shell",
+    "type":"clock",
+    "allow_emulator":true,
+    "storage": [
+      {"name":"cliock.app.js","url":"app.js"},
+      {"name":"cliock.img","url":"app-icon.js","evaluate":true}
+    ]
+  },
   { "id": "widver",
     "name": "Firmware Version Widget",
     "icon": "widget.png",
@@ -888,6 +927,17 @@
     "storage": [
       {"name":"barclock.app.js","url":"clock-bar.js"},
       {"name":"barclock.img","url":"clock-bar-icon.js","evaluate":true}
+    ]
+  },
+  { "id": "widtbat",
+    "name": "Tiny Battery Widget",
+    "icon": "widget.png",
+    "version":"0.01",
+    "description": "Tiny blueish battery widget, vibs and changes level color when charging",
+    "tags": "widget,tool,system",
+    "type":"widget",
+    "storage": [
+      {"name":"widtbat.wid.js","url":"widget.js"}
     ]
   }
 ]
