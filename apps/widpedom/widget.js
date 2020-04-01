@@ -3,6 +3,13 @@
   let lastUpdate = new Date();
   let stp_today = 0;
 
+  require('Storage').write('custom.boot.js', `
+    Bangle.setOptions({
+      stepCounterThresholdLow = sqr(8192-90),
+      stepCounterThresholdHigh = sqr(8192+90)
+    })
+` );
+
   // draw your widget
   function draw() {
     var width = 24;
