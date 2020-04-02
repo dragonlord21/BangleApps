@@ -295,7 +295,7 @@ function refreshLibrary() {
     <div class="tile-content">
       <p class="tile-title text-bold">${escapeHtml(app.name)} ${versionInfo}</p>
       <p class="tile-subtitle">${escapeHtml(app.description)}</p>
-      <a href="https://github.com/espruino/BangleApps/tree/master/apps/${app.id}" target="_blank" class="link-github"><img src="img/github-icon-sml.png" alt="See the code on GitHub"/></a>
+      <a href="https://github.com/dragonlord21/BangleApps/tree/Bangle_LCARS/apps/${app.id}" target="_blank" class="link-github"><img src="img/github-icon-sml.png" alt="See the code on GitHub"/></a>
     </div>
     <div class="tile-action">
       <button class="btn btn-link btn-action btn-lg ${(appInstalled&&app.interface)?"":"d-hide"}" appid="${app.id}" title="Download data from app"><i class="icon icon-download"></i></button>
