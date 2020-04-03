@@ -576,5 +576,18 @@
     "storage": [
       {"name":"widtbat.wid.js","url":"widget.js"}
     ]
+  },
+  { "id": "chrono",
+    "name": "Chrono timer",
+    "icon": "chrono.png",
+    "version":"0.01",
+    "description": "Chrono formaly known as timer",
+    "tags": "app,tool,timer",
+    "type": "app",
+    "allow_emulator":true,
+    "storage": [
+      {"name":"chrono.app.js","url": "chrono.js"},
+      {"name":"chrono.img","url": "chrono-icon.js","evaluate": true}
+    ]
   }
 ]
