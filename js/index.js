@@ -14,119 +14,7 @@ httpGet("apps.json").then(apps=>{
   refreshFilter();
 });
 
-// Status
 // ===========================================  Top Navigation
-function showToast(message, type) {
-  // toast-primary, toast-success, toast-warning or toast-error
-  var style = "toast-primary";
-  if (type=="success")  style = "toast-success";
-  else if (type=="error")  style = "toast-error";
-  else if (type!==undefined) console.log("showToast: unknown toast "+type);
-  var toastcontainer = document.getElementById("toastcontainer");
-  var msgDiv = htmlElement(`<div class="toast ${style}"></div>`);
-  msgDiv.innerHTML = message;
-  toastcontainer.append(msgDiv);
-  setTimeout(function() {
-    msgDiv.remove();
-  }, 5000);
-}
-var progressToast; // the DOM element
-var progressSticky; // showProgress(,,"sticky") don't remove until hideProgress("sticky")
-var progressInterval; // the interval used if showProgress(..., "animate")
-var progressPercent; // the current progress percentage
-function showProgress(text, percent, sticky) {
-  if (sticky=="sticky")
-    progressSticky = true;
-  if (!progressToast) {
-    if (progressInterval) {
-      clearInterval(progressInterval);
-      progressInterval = undefined;
-    }
-    if (percent == "animate") {
-      progressInterval = setInterval(function() {
-        progressPercent += 2;
-        if (progressPercent>100) progressPercent=0;
-        showProgress(undefined, progressPercent);
-      }, 100);
-      percent = 0;
-    }
-    progressPercent = percent;
-
-    var toastcontainer = document.getElementById("toastcontainer");
-    progressToast = htmlElement(`<div class="toast">
-    ${text ? `<div>${text}</div>`:``}
-    <div class="bar bar-sm">
-      <div class="bar-item" id="progressToast" role="progressbar" style="width:${percent}%;" aria-valuenow="${percent}" aria-valuemin="0" aria-valuemax="100"></div>
-    </div>
-  </div>`);
-    toastcontainer.append(progressToast);
-  } else {
-    var pt=document.getElementById("progressToast");
-    pt.setAttribute("aria-valuenow",percent);
-    pt.style.width = percent+"%";
-  }
-}
-function hideProgress(sticky) {
-  if (progressSticky && sticky!="sticky")
-    return;
-  progressSticky = false;
-  if (progressInterval) {
-    clearInterval(progressInterval);
-    progressInterval = undefined;
-  }
-  if (progressToast) progressToast.remove();
-  progressToast = undefined;
-}
-
-Puck.writeProgress = function(charsSent, charsTotal) {
-  if (charsSent===undefined) {
-    hideProgress();
-    return;
-  }
-  var percent = Math.round(charsSent*100/charsTotal);
-  showProgress(undefined, percent);
-}
-function showPrompt(title, text, buttons) {
-  if (!buttons) buttons={yes:1,no:1};
-  return new Promise((resolve,reject) => {
-    var modal = htmlElement(`<div class="modal active">
-      <!--<a href="#close" class="modal-overlay" aria-label="Close"></a>-->
-      <div class="modal-container">
-        <div class="modal-header">
-          <a href="#close" class="btn btn-clear float-right" aria-label="Close"></a>
-          <div class="modal-title h5">${escapeHtml(title)}</div>
-        </div>
-        <div class="modal-body">
-          <div class="content">
-            ${escapeHtml(text).replace(/\n/g,'<br/>')}
-          </div>
-        </div>
-        <div class="modal-footer">
-          <div class="modal-footer">
-            ${buttons.yes?'<button class="btn btn-primary" isyes="1">Yes</button>':''}
-            ${buttons.no?'<button class="btn" isyes="0">No</button>':''}
-            ${buttons.ok?'<button class="btn" isyes="1">Ok</button>':''}
-          </div>
-        </div>
-      </div>
-    </div>`);
-    document.body.append(modal);
-    modal.querySelector("a[href='#close']").addEventListener("click",event => {
-      event.preventDefault();
-      reject("User cancelled");
-      modal.remove();
-    });
-    htmlToArray(modal.getElementsByTagName("button")).forEach(button => {
-      button.addEventListener("click",event => {
-        event.preventDefault();
-        var isYes = event.target.getAttribute("isyes")=="1";
-        if (isYes) resolve();
-        else reject("User cancelled");
-        modal.remove();
-      });
-    });
-  });
-}
 function showChangeLog(appid) {
   var app = appNameToApp(appid);
   function show(contents) {
@@ -170,12 +58,11 @@ function handleCustomApp(appTemplate) {
       Object.keys(appFiles).forEach(k => app[k] = appFiles[k]);
       console.log("Received custom app", app);
       modal.remove();
-      showProgress(`Uploading ${app.name}`,undefined,"sticky");
       Comms.uploadApp(app).then(()=>{
-        hideProgress("sticky");
+        Progress.hide({sticky:true});
         resolve();
       }).catch(e => {
-        hideProgress("sticky");
+        Progress.hide({sticky:true});
         reject(e);
       });
     }, false);
@@ -295,7 +182,7 @@ function refreshLibrary() {
     <div class="tile-content">
       <p class="tile-title text-bold">${escapeHtml(app.name)} ${versionInfo}</p>
       <p class="tile-subtitle">${escapeHtml(app.description)}</p>
-      <a href="https://github.com/espruino/BangleApps/tree/master/apps/${app.id}" target="_blank" class="link-github"><img src="img/github-icon-sml.png" alt="See the code on GitHub"/></a>
+      <a href="https://github.com/dragonlord21/BangleApps/tree/Bangle_LCARS/apps/${app.id}" target="_blank" class="link-github"><img src="img/github-icon-sml.png" alt="See the code on GitHub"/></a>
     </div>
     <div class="tile-action">
       <button class="btn btn-link btn-action btn-lg ${(appInstalled&&app.interface)?"":"d-hide"}" appid="${app.id}" title="Download data from app"><i class="icon icon-download"></i></button>
@@ -326,7 +213,8 @@ function refreshLibrary() {
           console.error("No entrypoint found for "+appid);
           return;
         }
-        var baseurl = window.location.href;
+        //var baseurl = window.location.href; //Gordons Base URL
+        var baseurl = "https://github.com/dragonlord21/BangleApps/tree/Bangle_LCARS/";
         baseurl = baseurl.substr(0,baseurl.lastIndexOf("/"));
         var url = baseurl+"/apps/"+app.id+"/"+file.url;
         window.open(`https://espruino.com/ide/emulator.html?codeurl=${url}&upload`);
@@ -334,9 +222,8 @@ function refreshLibrary() {
         // upload
         icon.classList.remove("icon-upload");
         icon.classList.add("loading");
-        showProgress(`Uploading ${app.name}`,undefined,"sticky");
         Comms.uploadApp(app).then((appJSON) => {
-          hideProgress("sticky");
+          Progress.hide({sticky:true});
           if (appJSON) appsInstalled.push(appJSON);
           showToast(app.name+" Uploaded!", "success");
           icon.classList.remove("loading");
@@ -344,7 +231,7 @@ function refreshLibrary() {
           refreshMyApps();
           refreshLibrary();
         }).catch(err => {
-          hideProgress("sticky");
+          Progress.hide({sticky:true});
           showToast("Upload failed, "+err, "error");
           icon.classList.remove("loading");
           icon.classList.add("icon-upload");
@@ -403,19 +290,16 @@ function customApp(app) {
 
 function updateApp(app) {
   if (app.custom) return customApp(app);
-  showProgress(`Upgrading ${app.name}`,undefined,"sticky");
   return Comms.removeApp(app).then(()=>{
     showToast(app.name+" removed successfully. Updating...",);
     appsInstalled = appsInstalled.filter(a=>a.id!=app.id);
     return Comms.uploadApp(app);
   }).then((appJSON) => {
-    hideProgress("sticky");
     if (appJSON) appsInstalled.push(appJSON);
     showToast(app.name+" Updated!", "success");
     refreshMyApps();
     refreshLibrary();
   }, err=>{
-    hideProgress("sticky");
     showToast(app.name+" update failed, "+err,"error");
     refreshMyApps();
     refreshLibrary();
@@ -488,18 +372,15 @@ return `<div class="tile column col-6 col-sm-12 col-xs-12">
 
 function getInstalledApps() {
   showLoadingIndicator("myappscontainer");
-  showProgress(`Getting app list...`,undefined,"sticky");
   // Get apps and files
   return Comms.getInstalledApps()
     .then(appJSON => {
-      hideProgress("sticky");
       appsInstalled = appJSON;
       refreshMyApps();
       refreshLibrary();
     })
     .then(() => handleConnectionChange(true))
     .catch(err=>{
-      hideProgress("sticky");
       return Promise.reject();
     });
 }
@@ -555,15 +436,14 @@ document.getElementById("settime").addEventListener("click",event=>{
 });
 document.getElementById("removeall").addEventListener("click",event=>{
   showPrompt("Remove All","Really remove all apps?").then(() => {
-    showProgress("Removing all apps","animate", "sticky");
     return Comms.removeAllApps();
   }).then(()=>{
-    hideProgress("sticky");
+    Progress.hide({sticky:true});
     appsInstalled = [];
     showToast("All apps removed","success");
     return getInstalledApps();
   }).catch(err=>{
-    hideProgress("sticky");
+    Progress.hide({sticky:true});
     showToast("App removal failed, "+err,"error");
   });
 });
@@ -578,24 +458,23 @@ document.getElementById("installdefault").addEventListener("click",event=>{
     appCount = defaultApps.length;
     return showPrompt("Install Defaults","Remove everything and install default apps?");
   }).then(() => {
-    showProgress("Removing all apps","animate", "sticky");
     return Comms.removeAllApps();
   }).then(()=>{
-    hideProgress("sticky");
+    Progress.hide({sticky:true});
     appsInstalled = [];
     showToast(`Existing apps removed. Installing  ${appCount} apps...`);
     return new Promise((resolve,reject) => {
       function upload() {
         var app = defaultApps.shift();
         if (app===undefined) return resolve();
-        showProgress(`${app.name} (${appCount-defaultApps.length}/${appCount})`,undefined,"sticky");
+        Progress.show({title:`${app.name} (${appCount-defaultApps.length}/${appCount})`,sticky:true});
         Comms.uploadApp(app,"skip_reset").then((appJSON) => {
-          hideProgress("sticky");
+          Progress.hide({sticky:true});
           if (appJSON) appsInstalled.push(appJSON);
           showToast(`(${appCount-defaultApps.length}/${appCount}) ${app.name} Uploaded`);
           upload();
         }).catch(function() {
-          hideProgress("sticky");
+          Progress.hide({sticky:true});
           reject()
         });
       }
@@ -607,7 +486,7 @@ document.getElementById("installdefault").addEventListener("click",event=>{
     showToast("Default apps successfully installed!","success");
     return getInstalledApps();
   }).catch(err=>{
-    hideProgress("sticky");
+    Progress.hide({sticky:true});
     showToast("App Install failed, "+err,"error");
   });
 });
