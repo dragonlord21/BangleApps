@@ -60,7 +60,7 @@ var AppInfo = {
       if (app.type && app.type!="app") json.type = app.type;
       if (fileContents.find(f=>f.name==app.id+".app.js"))
         json.src = app.id+".app.js";
-        if (fileContents.find(f=>f.name==app.id+".settings.js"))
+      if (fileContents.find(f=>f.name==app.id+".settings.js"))
         json.settings = app.id+".settings.js";
       if (fileContents.find(f=>f.name==app.id+".img"))
         json.icon = app.id+".img";

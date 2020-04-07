@@ -1,8 +1,5 @@
 // This runs after a 'fresh' boot
 var settings=require("Storage").readJSON('setting.json',1)||{};
-if (!settings.welcomed && require("Storage").read("welcome.js")!==undefined) {
-  setTimeout(()=>load("welcome.js"));
-} else {
   // load clock if specified
   var clockApp = settings.clock;
   if (clockApp) clockApp = require("Storage").read(clockApp)
@@ -39,4 +36,3 @@ if (!settings.welcomed && require("Storage").read("welcome.js")!==undefined) {
     eval(clockApp);
     delete clockApp;
   }
-}

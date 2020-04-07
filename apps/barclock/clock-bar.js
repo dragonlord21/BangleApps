@@ -20,33 +20,34 @@
     middle: g.getWidth() / 2,
     center: g.getHeight() / 2,
   }
- // hardcoded "settings"
- const settings = {
-  time: {
-    color: -1,
-    font: '6x8',
-    size: (is12Hour && locale.hasMeridian) ? 6 : 8,
-    middle: screen.middle,
-    center: screen.center,
-    ampm: {
+
+  // hardcoded "settings"
+  const settings = {
+    time: {
       color: -1,
       font: '6x8',
-      size: 2,
+      size: (is12Hour && locale.hasMeridian) ? 6 : 8,
+      middle: screen.middle,
+      center: screen.center,
+      ampm: {
+        color: -1,
+        font: '6x8',
+        size: 2,
+      },
     },
-  },
-  date: {
-    color: -1,
-    font: 'Vector',
-    size: 20,
-    middle: screen.height - 20, // at bottom of screen
-    center: screen.center,
-  },
-  bar: {
-    color: -1,
-    top: 155, // just below time
-    thickness: 6, // matches 24h time "pixel" size
-  },
-}
+    date: {
+      color: -1,
+      font: 'Vector',
+      size: 20,
+      middle: screen.height - 20, // at bottom of screen
+      center: screen.center,
+    },
+    bar: {
+      color: -1,
+      top: 155, // just below time
+      thickness: 6, // matches 24h time "pixel" size
+    },
+  }
 
   const SECONDS_PER_MINUTE = 60
 
