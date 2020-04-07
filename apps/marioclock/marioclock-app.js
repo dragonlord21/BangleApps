@@ -1,10 +1,12 @@
-/**********************************
-  BangleJS MARIO CLOCK
-  + Based on Espruino Mario Clock V3 https://github.com/paulcockrell/espruino-mario-clock
-  + Converting images to 1bit BMP: Image > Mode > Indexed and tick the "Use black and white (1-bit) palette", Then export as BMP.
-  + Online Image convertor: https://www.espruino.com/Image+Converter
-  + Images must be converted 1Bit White/Black !!! Not Black/White
-**********************************/
+/**
+ * BangleJS MARIO CLOCK
+ *
+ * + Original Author: Paul Cockrell https://github.com/paulcockrell
+ * + Created: April 2020
+ * + Based on Espruino Mario Clock V3 https://github.com/paulcockrell/espruino-mario-clock
+ * + Online Image convertor: https://www.espruino.com/Image+Converter, Use transparency + compression + 8bit Web + export as Image String
+ * + Images must be drawn as PNGs with transparent backgrounds
+ */
 
 const locale = require("locale");
 const storage = require('Storage');
@@ -22,14 +24,20 @@ const LIGHTEST = "#effedd";
 const LIGHT = "#add795";
 const DARK = "#588d77";
 const DARKEST = "#122d3e";
+const NIGHT = "#001818";
 
-const marioSprite = {
+// Character names
+const TOAD = "toad";
+const MARIO = "mario";
+
+const characterSprite = {
   frameIdx: 0,
   x: 35,
   y: 55,
   jumpCounter: 0,
   jumpIncrement: Math.PI / 6,
-  isJumping: false
+  isJumping: false,
+  character: MARIO,
 };
 
 const coinSprite = {
@@ -49,6 +57,27 @@ const ONE_SECOND = 1000;
 
 let timer = 0;
 let backgroundArr = [];
+let nightMode = false;
+
+function genRanNum(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
+
+function switchCharacter() {
+  const curChar = characterSprite.character;
+  let newChar;
+  if (curChar === MARIO) {
+    newChar = TOAD;
+  } else {
+    newChar = MARIO;
+  }
+
+  characterSprite.character = newChar;
+}
+
+function toggleNightMode() {
+  nightMode = !nightMode;
+}
 
 function incrementTimer() {
   if (timer > 1000) {
@@ -61,19 +90,21 @@ function incrementTimer() {
 
 function drawBackground() {
   // Clear screen
-  g.setColor(LIGHTEST);
+  const bgColor = (nightMode) ? NIGHT : LIGHTEST;
+  g.setColor(bgColor);
   g.fillRect(0, 10, W, H);
 
-  // Date bar
-  g.setColor(DARKEST);
-  g.fillRect(0, 0, W, 9);
-
-  // draw sky
-  g.setColor(LIGHT);
+  // set cloud colors and draw clouds
+  const cloudColor = (nightMode) ? DARK : LIGHT;
+  g.setColor(cloudColor);
   g.fillRect(0, 10, g.getWidth(), 15);
   g.fillRect(0, 17, g.getWidth(), 17);
   g.fillRect(0, 19, g.getWidth(), 19);
   g.fillRect(0, 21, g.getWidth(), 21);
+
+  // Date bar
+  g.setColor(DARKEST);
+  g.fillRect(0, 0, W, 9);
 }
 
 function drawFloor() {
@@ -86,14 +117,15 @@ function drawFloor() {
 function drawPyramid() {
   const pPol = [pyramidSprite.x + 10, H - 6, pyramidSprite.x + 50, pyramidSprite.height, pyramidSprite.x + 90, H - 6]; // Pyramid poly
 
-  g.setColor(LIGHT);
+  const color = (nightMode) ? DARK : LIGHT;
+  g.setColor(color);
   g.fillPoly(pPol);
 
   pyramidSprite.x -= 1;
   // Reset and randomize pyramid if off-screen
   if (pyramidSprite.x < - 100) {
     pyramidSprite.x = 90;
-    pyramidSprite.height = Math.floor(Math.random() * (60 /* max */ - 25 /* min */ + 1) + 25 /* min */);
+    pyramidSprite.height = genRanNum(25, 60);
   }
 }
 
@@ -105,9 +137,14 @@ function drawTreesFrame(x, y) {
   g.drawLine(x + 6 /* Match stalk to palm tree */, y + 6 /* Match stalk to palm tree */, x + 6, H - 6);
 }
 
-function drawTrees() {
-  let newSprite = {x: 90, y: Math.floor(Math.random() * (40 /* max */ - 5 /* min */ + 1) + 15 /* min */)};
+function generateTreeSprite() {
+  return {
+    x: 90,
+    y: genRanNum(30, 60)
+  };
+}
 
+function drawTrees() {
   // remove first sprite if offscreen
   let firstBackgroundSprite = backgroundArr[0];
   if (firstBackgroundSprite) {
@@ -117,6 +154,7 @@ function drawTrees() {
   // set background sprite if array empty
   let lastBackgroundSprite = backgroundArr[backgroundArr.length - 1];
   if (!lastBackgroundSprite) {
+    const newSprite = generateTreeSprite();
     lastBackgroundSprite = newSprite;
     backgroundArr.push(lastBackgroundSprite);
   }
@@ -125,6 +163,7 @@ function drawTrees() {
   if (backgroundArr.length < 2 && lastBackgroundSprite.x < (16 * 7)) {
     const randIdx = Math.floor(Math.random() * 25);
     if (randIdx < 2) {
+      const newSprite = generateTreeSprite();
       backgroundArr.push(newSprite);
     }
   }
@@ -155,50 +194,70 @@ function drawCoin() {
 }
 
 function drawMarioFrame(idx, x, y) {
-  const mFr1 = require("heatshrink").decompress(atob("h8UxH+AAkHAAYKFBolcAAIPIBgYPDBpgfGFIY7EA4YcEBIPWAAYdDC4gLDAII5ECoYOFDogODFgoJCBwYZCAQYOFBAhAFFwZKGHQpMDw52FSg2HAAIoDAgIOMB5AAFGQTtKeBLuNcQwOJFwgJFA=")); // Mario Frame 1
-  const mFr2 = require("heatshrink").decompress(atob("h8UxH+AAkHAAYKFBolcAAIPIBgYPDBpgfGFIY7EA4YcEBIPWAAYdDC4gLDAII5ECoYOFDogODFgoJCBwYZCAQYOFBAhAFFwZKGHQpMDw+HCQYEBSowOBBQIdCCgTOIFgiVHFwYCBUhA9FBwz8HAo73GACQA=")); // Mario frame 2
-
   switch(idx) {
     case 0:
+      const mFr1 = require("heatshrink").decompress(atob("h8UxH+AAkHAAYKFBolcAAIPIBgYPDBpgfGFIY7EA4YcEBIPWAAYdDC4gLDAII5ECoYOFDogODFgoJCBwYZCAQYOFBAhAFFwZKGHQpMDw52FSg2HAAIoDAgIOMB5AAFGQTtKeBLuNcQwOJFwgJFA=")); // Mario Frame 1
       g.drawImage(mFr1, x, y);
       break;
     case 1:
+      const mFr2 = require("heatshrink").decompress(atob("h8UxH+AAkHAAYKFBolcAAIPIBgYPDBpgfGFIY7EA4YcEBIPWAAYdDC4gLDAII5ECoYOFDogODFgoJCBwYZCAQYOFBAhAFFwZKGHQpMDw+HCQYEBSowOBBQIdCCgTOIFgiVHFwYCBUhA9FBwz8HAo73GACQA=")); // Mario frame 2
       g.drawImage(mFr2, x, y);
       break;
     default:
   }
 }
 
-function drawMario(date) {
+function drawToadFrame(idx, x, y) {
+  switch(idx) {
+    case 0:
+      const tFr1 = require("heatshrink").decompress(atob("iEUxH+ACkHAAoNJrnWAAQRGg/WrgACB4QEBCAYOBB44QFB4QICAg4QBBAQbDEgwPCHpAGCGAQ9KAYQPKCYg/EJAoADAwaKFw4BEP4YQCBIIABB468EB4QADYIoQGDwQOGBYYrCCAwbFFwgQEM4gAEeA4OIH4ghFAAYLD")); // Toad Frame 1
+      g.drawImage(tFr1, x, y);
+      break;
+    case 1:
+      const tFr2 = require("heatshrink").decompress(atob("iEUxH+ACkHAAoNJrnWAAQRGg/WrgACB4QEBCAYOBB44QFB4QICAg4QBBAQbDEgwPCHpAGCGAQ9KAYQPKCYg/EJAoADAwaKFw4BEP4YQCBIIABB468EB4QADYIoQGDwQOGBYQrDb4wcGFxYLDMoYgHRYgwKABAMBA")); // Mario frame 2
+      g.drawImage(tFr2, x, y);
+      break;
+    default:
+  }
+}
+
+function drawCharacter(date, character) {
   // calculate jumping
   const seconds = date.getSeconds(),
         milliseconds = date.getMilliseconds();
 
-  if (seconds == 59 && milliseconds > 800 && !marioSprite.isJumping) {
-    marioSprite.isJumping = true;
+  if (seconds == 59 && milliseconds > 800 && !characterSprite.isJumping) {
+    characterSprite.isJumping = true;
   }
 
-  if (marioSprite.isJumping) {
-    marioSprite.y = (Math.sin(marioSprite.jumpCounter) * -12) + 50 /* Mario Y base value */;
-    marioSprite.jumpCounter += marioSprite.jumpIncrement;
+  if (characterSprite.isJumping) {
+    characterSprite.y = (Math.sin(characterSprite.jumpCounter) * -12) + 50 /* Character Y base value */;
+    characterSprite.jumpCounter += characterSprite.jumpIncrement;
 
-    if (parseInt(marioSprite.jumpCounter) === 2 && !coinSprite.isAnimating) {
+    if (parseInt(characterSprite.jumpCounter) === 2 && !coinSprite.isAnimating) {
       coinSprite.isAnimating = true;
     }
 
-    if (marioSprite.jumpCounter.toFixed(1) >= 4) {
-      marioSprite.jumpCounter = 0;
-      marioSprite.isJumping = false;
+    if (characterSprite.jumpCounter.toFixed(1) >= 4) {
+      characterSprite.jumpCounter = 0;
+      characterSprite.isJumping = false;
     }
   }
 
   // calculate animation timing
   if (timer % 50 === 0) {
     // shift to next frame
-    marioSprite.frameIdx ^= 1;
+    characterSprite.frameIdx ^= 1;
   }
 
-  drawMarioFrame(marioSprite.frameIdx, marioSprite.x, marioSprite.y);
+  switch(characterSprite.character) {
+    case(TOAD):
+      drawToadFrame(characterSprite.frameIdx, characterSprite.x, characterSprite.y);
+      break;
+    case(MARIO):
+    default:
+      drawMarioFrame(characterSprite.frameIdx, characterSprite.x, characterSprite.y);
+  }
 }
 
 function drawBrickFrame(x, y) {
@@ -244,7 +303,7 @@ function redraw() {
   drawTrees();
   drawTime(date);
   drawDate(date);
-  drawMario(date);
+  drawCharacter(date);
   drawCoin();
 
   // Render new frame
@@ -294,7 +353,7 @@ function init() {
 
   // Get Mario to jump!
   setWatch(() => {
-    if (intervalRef && !marioSprite.isJumping) marioSprite.isJumping = true;
+    if (intervalRef && !characterSprite.isJumping) characterSprite.isJumping = true;
     resetDisplayTimeout();
   }, BTN1, {repeat:true});
 
@@ -311,10 +370,25 @@ function init() {
     }
   });
 
-  Bangle.on('faceUp',function(up){
+  Bangle.on('faceUp', (up) => {
     if (up && !Bangle.isLCDOn()) {
       clearTimers();
       Bangle.setLCDPower(true);
+    }
+  });
+
+  Bangle.on('swipe', (sDir) => {
+    resetDisplayTimeout();
+
+    switch(sDir) {
+      // Swipe right (1) - change character (on a loop)
+      case(1):
+        switchCharacter();
+        break;
+      // Swipe left (-1) - change day/night mode (on a loop)
+      case(-1):
+      default:
+        toggleNightMode();
     }
   });
 

@@ -216,6 +216,10 @@ and which gives information about the app for the Launcher.
   "type":"...",               // optional(if app) - 'app'/'widget'/'launch'/'bootloader'
   "tags": "",                 // comma separated tag list for searching
 
+  "readme": "README.md",      // if supplied, a link to a markdown-style text file
+                              // that contains more information about this app (usage, etc)
+                              // A 'Read more...' link will be added under the app
+
   "custom": "custom.html",    // if supplied, apps/custom.html is loaded in an
                               // iframe, and it must post back an 'app' structure
                               // like this one with 'storage','name' and 'id' set up
@@ -380,8 +384,6 @@ That way removing the app also cleans up `app.settings.json`.
 ### Misc Notes
 
 - Need to save state? Use the `E.on('kill',...)` event to save JSON to a file called `7chname.json`, then load it at startup.
-
-- 'Welcome' apps define a file called `welcome.js` which the booloader picks up. This then chain-loads the welcome app itself.
 
 - 'Alarm' apps define a file called `alarm.js` which handles the actual alarm window.
 
