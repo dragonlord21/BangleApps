@@ -285,7 +285,6 @@ function uploadApp(app) {
 
 function removeApp(app) {
   return showPrompt("Delete","Really remove '"+app.name+"'?").then(() => {
-    return Comms.removeApp(app);
     return getInstalledApps().then(()=>{
       // a = from appid.info, app = from apps.json
       return Comms.removeApp(appsInstalled.find(a => a.id === app.id))
@@ -466,6 +465,19 @@ librarySearchInput.addEventListener('input', evt => {
 });
 
 // =========================================== About
+
+if (window.location.host=="banglejs.com") {
+  document.getElementById("apploaderlinks").innerHTML =
+    'This is the official Bangle.js App Loader - you can also try the <a href="https://espruino.github.io/BangleApps/">Development Version</a> for the most recent apps.';
+} else if (window.location.host=="espruino.github.io") {
+  document.title += " [Development]";
+  document.getElementById("apploaderlinks").innerHTML =
+    'This is the development Bangle.js App Loader - you can also try the <a href="https://banglejs.com/apps/">Official Version</a> for stable apps.';
+} else {
+  document.title += " [Unofficial]";
+  document.getElementById("apploaderlinks").innerHTML =
+    'This is not the official Bangle.js App Loader - you can try the <a href="https://banglejs.com/apps/">Official Version</a> here.';
+}
 
 document.getElementById("settime").addEventListener("click",event=>{
   Comms.setTime().then(()=>{
