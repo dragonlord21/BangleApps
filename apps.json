@@ -609,13 +609,25 @@
     "name": "OpenStreetMap",
     "shortName":"OpenStMap",
     "icon": "app.png",
-    "version":"0.01",
+    "version":"0.02",
     "description": "[BETA] Loads map tiles from OpenStreetMap onto your Bangle.js and displays a map of where you are",
     "tags": "outdoors,gps",
     "custom": "custom.html",
     "storage": [
       {"name":"openstmap.app.js","url":"app.js"},
       {"name":"openstmap.img","url":"app-icon.js","evaluate":true}
+    ]
+  },
+  { "id": "custom",
+    "name": "Custom Boot Code ",
+    "icon": "custom.png",
+    "version":"0.01",
+    "description": "Add code you want to run at boot time",
+    "tags": "tool,system",
+    "type": "bootloader",
+    "custom":"custom.html",
+    "storage": [
+       {"name":"custom"}
     ]
   }
 ]
