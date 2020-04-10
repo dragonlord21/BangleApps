@@ -1,0 +1,14 @@
+Sync fork from BangeJS
+https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/syncing-a-fork
+
+$ git fetch upstream
+$ git checkout master //from master
+$ git merge upstream/master
+$ git push origin
+
+Get interesting changes into Bangle_LCARS
+$ git checkout Bangle_LCARS
+- use GitLens to compare branch Bangle_LCARS with master
+- get changes via copy or file/folder checkout
+$ git checkout origin/master apps/file.js
+- commit changes to Github
