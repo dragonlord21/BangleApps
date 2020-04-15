@@ -119,7 +119,7 @@
   { "id": "setting",
     "name": "Settings",
     "icon": "settings.png",
-    "version":"0.12",
+    "version":"0.14",
     "description": "A menu for setting up Bangle.js",
     "tags": "tool,system",
     "storage": [
@@ -250,6 +250,20 @@
     "type":"widget",
     "storage": [
       {"name":"widbat.wid.js","url":"widget.js"}
+    ]
+  },
+  { "id": "widbatpc",
+    "name": "Battery Level Widget (with percentage)",
+    "shortName": "Battery Widget",
+    "icon": "widget.png",
+    "version":"0.08",
+    "description": "Show the current battery level and charging status in the top right of the clock, with charge percentage",
+    "tags": "widget,battery",
+    "type":"widget",
+    "storage": [
+      {"name":"widbatpc.wid.js","url":"widget.js"},
+      {"name":"widbatpc.settings.js","url":"settings.js"},
+      {"name":"widbatpc.settings.json","content": "{}"}
     ]
   },
   { "id": "widbt",
@@ -617,6 +631,20 @@
     "storage": [
       {"name":"openstmap.app.js","url":"app.js"},
       {"name":"openstmap.img","url":"app-icon.js","evaluate":true}
+    ]
+  },
+  { "id": "activepedom",
+    "name": "Active Pedometer",
+    "shortName":"Active Pedometer",
+    "icon": "app.png",
+    "version":"0.01",
+    "description": "Pedometer that filters out arm movement and displays a step goal progress.",
+    "tags": "outdoors,widget",
+    "type":"widget",
+    "storage": [
+      {"name":"activepedom.wid.js","url":"widget.js"},
+      {"name":"activepedom.settings.js","url":"settings.js"},
+      {"name":"activepedom.img","url":"app-icon.js","evaluate":true}
     ]
   },
   { "id": "custom",
