@@ -108,7 +108,7 @@
   { "id": "mclock",
     "name": "Morphing Clock",
     "icon": "clock-morphing.png",
-    "version":"0.03",
+    "version":"0.04",
     "description": "7 segment clock that morphs between minutes and hours",
     "tags": "clock",
     "type":"clock",
@@ -697,18 +697,17 @@
        {"name":"custom"}
     ]
   },
-    {
-      "id": "rclock",
-      "name": "Round clock with seconds,  minutes and date",
-      "shortName":"Round Clock",
-      "icon": "app.png",
-      "version":"0.01",
-      "description": "Designed round clock with ticks for minutes and seconds",
-      "tags": "clock",
-      "type": "clock",
-      "storage": [
-        {"name":"rclock.app.js","url":"rclock.app.js"},
-        {"name":"rclock.img","url":"app-icon.js","evaluate":true}
-      ]
-    }
+  { "id": "rclock",
+    "name": "Round clock with seconds,  minutes and date",
+    "shortName":"Round Clock",
+    "icon": "app.png",
+    "version":"0.01",
+    "description": "Designed round clock with ticks for minutes and seconds",
+    "tags": "clock",
+    "type": "clock",
+    "storage": [
+      {"name":"rclock.app.js","url":"rclock.app.js"},
+      {"name":"rclock.img","url":"app-icon.js","evaluate":true}
+    ]
+  }
 ]
