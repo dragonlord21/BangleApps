@@ -2,7 +2,7 @@
   { "id": "boot",
     "name": "Bootloader",
     "icon": "bootloader.png",
-    "version":"0.14",
+    "version":"0.15",
     "description": "This is needed by Bangle.js to automatically load the clock, menu, widgets and settings",
     "tags": "tool,system",
     "type":"bootloader",
@@ -53,7 +53,7 @@
   { "id": "about",
     "name": "About",
     "icon": "app.png",
-    "version":"0.04",
+    "version":"0.05",
     "description": "Bangle.js About page - showing software version, stats, and a collaborative mural from the Bangle.js KickStarter backers",
     "tags": "tool,system",
     "allow_emulator":true,
@@ -122,9 +122,10 @@
   { "id": "setting",
     "name": "Settings",
     "icon": "settings.png",
-    "version":"0.18",
+    "version":"0.19",
     "description": "A menu for setting up Bangle.js",
     "tags": "tool,system",
+    "readme": "README.md",
     "storage": [
       {"name":"setting.app.js","url":"settings.js"},
       {"name":"setting.boot.js","url":"boot.js"},
@@ -264,6 +265,23 @@
       {"name":"files.img","url":"files-icon.js","evaluate":true}
     ]
   },
+  { "id": "weather",
+    "name": "Weather",
+    "icon": "icon.png",
+    "version":"0.01",
+    "description": "Show Gadgetbridge weather report",
+    "readme": "readme.md",
+    "tags": "widget,outdoors",
+    "storage": [
+      {"name":"weather.app.js","url":"app.js"},
+      {"name":"weather.wid.js","url":"widget.js"},
+      {"name":"weather","url":"lib.js"},
+      {"name":"weather.img","url":"icon.js","evaluate":true}
+    ],
+    "data": [
+      {"name": "weather.json"}
+    ]
+  },
   { "id": "widbat",
     "name": "Battery Level Widget",
     "icon": "widget.png",
@@ -365,7 +383,7 @@
     "name": "Bluetooth Music Controls",
     "shortName": "Music Control",
     "icon": "hid-music.png",
-    "version":"0.01",
+    "version":"0.02",
     "description": "Enable HID in settings, pair with your phone, then use this app to control music from your watch!",
     "tags": "bluetooth",
     "storage": [
@@ -377,7 +395,7 @@
     "name": "Bluetooth Keyboard",
     "shortName": "Bluetooth Kbd",
     "icon": "hid-keyboard.png",
-    "version":"0.01",
+    "version":"0.02",
     "description": "Enable HID in settings, pair with your phone/PC, then use this app to control other apps",
     "tags": "bluetooth",
     "storage": [
@@ -389,7 +407,7 @@
     "name": "Binary Bluetooth Keyboard",
     "shortName": "Binary BT Kbd",
     "icon": "hid-binary-keyboard.png",
-    "version":"0.01",
+    "version":"0.02",
     "description": "Enable HID in settings, pair with your phone/PC, then type messages using the onscreen keyboard by tapping repeatedly on the key you want",
     "tags": "bluetooth",
     "storage": [
@@ -613,7 +631,7 @@
   { "id": "barclock",
     "name": "Bar Clock",
     "icon": "clock-bar.png",
-    "version":"0.04",
+    "version":"0.05",
     "description": "A simple digital clock showing seconds as a bar",
     "tags": "clock",
     "type":"clock",
@@ -674,7 +692,7 @@
     "name": "Active Pedometer",
     "shortName":"Active Pedometer",
     "icon": "app.png",
-    "version":"0.03",
+    "version":"0.04",
     "description": "Pedometer that filters out arm movement and displays a step goal progress. Steps are saved to a daily file and can be viewed as graph.",
     "tags": "outdoors,widget",
     "readme": "README.md",
@@ -708,6 +726,27 @@
     "storage": [
       {"name":"rclock.app.js","url":"rclock.app.js"},
       {"name":"rclock.img","url":"app-icon.js","evaluate":true}
+    ]
+  },
+  {
+    "id": "calendar",
+    "name": "Calendar",
+    "icon": "calendar.png",
+    "version": "0.01",
+    "description": "Simple calendar",
+    "tags": "calendar",
+    "readme": "README.md",
+    "allow_emulator": true,
+    "storage": [
+      {
+        "name": "calendar.app.js",
+        "url": "calendar.js"
+      },
+      {
+        "name": "calendar.img",
+        "url": "calendar-icon.js",
+        "evaluate": true
+      }
     ]
   }
 ]
