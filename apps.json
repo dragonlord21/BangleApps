@@ -1438,9 +1438,10 @@
     "name": "Camera shutter",
     "shortName":"Cam shutter",
     "icon": "app.png",
-    "version":"0.02",
+    "version":"0.03",
     "description": "Enable HID, connect to your phone, start your camera and trigger the shot on your Bangle",
-    "tags": "tools",
+    "readme": "README.md",
+    "tags": "bluetooth,tool",
     "storage": [
         {"name":"hidcam.app.js","url":"app.js"},
         {"name":"hidcam.img","url":"app-icon.js","evaluate":true}
@@ -1467,6 +1468,7 @@
     "version":"0.01",
     "description": "Convert your current GPS location to the Maidenhead locator system used by HAM amateur radio operators",
     "tags": "tool,outdoors,gps",
+    "readme": "README.md",
     "storage": [
       {"name":"hamloc.app.js","url":"app.js"},
       {"name":"hamloc.img","url":"app-icon.js","evaluate":true}
@@ -1475,9 +1477,10 @@
   { "id": "osmpoi",
     "name": "POI Compass",
     "icon": "app.png",
-    "version":"0.02",
+    "version":"0.03",
     "description": "Uploads all the points of interest in an area onto your watch, same as Beer Compass with more p.o.i.",
     "tags": "tool,outdoors,gps",
+    "readme": "README.md",
     "custom": "osmpoi.html",
     "storage": [
       {"name":"osmpoi.app.js"},
@@ -1534,6 +1537,18 @@
         "url": "calendar-icon.js",
         "evaluate": true
       }
+    ]
+  },
+  { "id": "hidjoystick",
+    "name": "Bluetooth Joystick",
+    "shortName": "Joystick",
+    "icon": "app.png",
+    "version":"0.01",
+    "description": "Emulates a 2 axis/5 button Joystick using the accelerometer as stick input and buttons 1-3, touch left as button 4 and touch right as button 5.",
+    "tags": "bluetooth",
+    "storage": [
+      {"name":"hidjoystick.app.js","url":"app.js"},
+      {"name":"hidjoystick.img","url":"app-icon.js","evaluate":true}
     ]
   }
 ]
