@@ -168,7 +168,7 @@
     "name": "Image background clock",
     "shortName":"Image Clock",
     "icon": "app.png",
-    "version":"0.02",
+    "version":"0.03",
     "description": "A clock with an image as a background",
     "tags": "clock",
     "type" : "clock",
@@ -303,7 +303,7 @@
   { "id": "speedo",
     "name": "Speedo",
     "icon": "speedo.png",
-    "version":"0.01",
+    "version":"0.03",
     "description": "Show the current speed according to the GPS",
     "tags": "tool,outdoors,gps",
     "storage": [
@@ -1470,7 +1470,7 @@
     "shortName":"Round Clock",
     "icon": "app.png",
     "version":"0.02",
-    "description": "Designed round clock with ticks for minutes and seconds",
+    "description": "Designed round clock with ticks for minutes and seconds and heart rate indication",
     "tags": "clock",
     "type": "clock",
     "storage": [
@@ -1660,6 +1660,20 @@
     "storage": [
         {"name":"beebclock.app.js","url":"beebclock.js"},
         {"name":"beebclock.img","url":"beebclock-icon.js","evaluate":true}
+    ]
+  },
+  { "id": "findphone",
+    "name": "Find Phone",
+    "shortName":"Find Phone",
+    "icon": "app.png",
+    "version":"0.01",
+    "description": "Find your phone via Gadgetbridge. Click any button to let your phone ring. 📳",
+    "tags": "tool,android",
+    "readme": "README.md",
+    "allow_emulator": true,
+    "storage": [
+        {"name":"findphone.app.js","url":"app.js"},
+        {"name":"findphone.img","url":"app-icon.js","evaluate":true}
     ]
   }
 ]
