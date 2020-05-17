@@ -2,7 +2,7 @@
   { "id": "boot",
     "name": "Bootloader",
     "icon": "bootloader.png",
-    "version":"0.16",
+    "version":"0.17",
     "description": "This is needed by Bangle.js to automatically load the clock, menu, widgets and settings",
     "tags": "tool,system",
     "type":"bootloader",
@@ -78,7 +78,7 @@
   { "id": "welcome",
     "name": "Welcome",
     "icon": "app.png",
-    "version":"0.08",
+    "version":"0.09",
     "description": "Appears at first boot and explains how to use Bangle.js",
     "tags": "start,welcome",
     "allow_emulator":true,
@@ -108,7 +108,7 @@
   { "id": "mclock",
     "name": "Morphing Clock",
     "icon": "clock-morphing.png",
-    "version":"0.05",
+    "version":"0.06",
     "description": "7 segment clock that morphs between minutes and hours",
     "tags": "clock",
     "type":"clock",
@@ -715,7 +715,21 @@
        {"name":"custom"}
     ]
   },
-  { "id": "rclock",
+  { "id": "hidcam",
+    "name": "Camera shutter",
+    "shortName":"Cam shutter",
+    "icon": "app.png",
+    "version":"0.03",
+    "description": "Enable HID, connect to your phone, start your camera and trigger the shot on your Bangle",
+    "readme": "README.md",
+    "tags": "bluetooth,tool",
+    "storage": [
+        {"name":"hidcam.app.js","url":"app.js"},
+        {"name":"hidcam.img","url":"app-icon.js","evaluate":true}
+    ]
+  },
+  {
+    "id": "rclock",
     "name": "Round clock with seconds,  minutes and date",
     "shortName":"Round Clock",
     "icon": "app.png",
@@ -772,12 +786,61 @@
       {
         "name": "largeclock.settings.js",
         "url": "settings.js"
+      }
+    ],
+    "data": [
+      {"name":"largeclock.json"}
+    ]
+  },
+  {
+    "id": "simpletimer",
+    "name": "Timer",
+    "icon": "app.png",
+    "version": "0.02",
+    "description": "Simple timer, useful when playing board games or cooking",
+    "tags": "timer",
+    "readme": "README.md",
+    "allow_emulator": true,
+    "storage": [
+      {
+        "name": "simpletimer.app.js",
+        "url": "app.js"
+      },
+      {
+        "name": ".tfnames",
+        "url": "gesture-tfnames.js",
+        "evaluate": true
+      },
+      {
+        "name": ".tfmodel",
+        "url": "gesture-tfmodel.js",
+        "evaluate": true
       },
       {
         "name": "simpletimer.img",
         "url": "app-icon.js",
         "evaluate": true
       }
+    ]
+  },
+  {
+    "id": "gallifr",
+    "name": "Time Traveller's Chronometer",
+    "shortName": "Time Travel Clock",
+    "icon": "gallifr.png",
+    "version": "0.01",
+    "description": "A clock for time travellers. The light pie segment shows the minutes, the black circle, the hour. The dial itself reads 'time' just in case you forget.",
+    "tags": "clock",
+    "readme": "README.md",
+    "type": "clock",
+    "allow_emulator":true,
+    "storage": [
+      { "name": "gallifr.app.js", "url": "app.js" },
+      { "name": "gallifr.img", "url": "app-icon.js", "evaluate": true },
+      { "name": "gallifr.settings.js", "url": "settings.js" }
+    ],
+    "data": [
+      {"name":"gallifr.json"}
     ]
   }
 ]
