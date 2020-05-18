@@ -1,3 +1,4 @@
+var is12Hour = (require("Storage").readJSON("setting.json",1)||{})["12hour"];
 var locale = require("locale");
 var CHARW = 34; // how tall are digits?
 var CHARP = 2; // how chunky are digits?
