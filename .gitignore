@@ -4,4 +4,5 @@ package-lock.json
 .DS_Store
 *.js.bak
 appdates.csv
+.vscode
 gitcommands.txt
