@@ -2,7 +2,7 @@
   { "id": "boot",
     "name": "Bootloader",
     "icon": "bootloader.png",
-    "version":"0.17",
+    "version":"0.18",
     "description": "This is needed by Bangle.js to automatically load the clock, menu, widgets and settings",
     "tags": "tool,system",
     "type":"bootloader",
@@ -65,7 +65,7 @@
   { "id": "locale",
     "name": "Languages",
     "icon": "locale.png",
-    "version":"0.06",
+    "version":"0.07",
     "description": "Translations for different countries",
     "tags": "tool,system,locale,translate",
     "type": "locale",
@@ -95,7 +95,7 @@
   { "id": "gbridge",
     "name": "Gadgetbridge",
     "icon": "app.png",
-    "version":"0.11",
+    "version":"0.12",
     "description": "The default notification handler for Gadgetbridge notifications from Android",
     "tags": "tool,system,android,widget",
     "type":"widget",
@@ -103,6 +103,9 @@
       {"name":"gbridge.settings.js","url":"settings.js"},
       {"name":"gbridge.img","url":"app-icon.js","evaluate":true},
       {"name":"gbridge.wid.js","url":"widget.js"}
+    ],
+    "data": [
+      {"name":"gbridge.json"}
     ]
   },
   { "id": "mclock",
@@ -137,7 +140,7 @@
     "name": "Default Alarm",
     "shortName":"Alarms",
     "icon": "app.png",
-    "version":"0.08",
+    "version":"0.09",
     "description": "Set and respond to alarms",
     "tags": "tool,alarm,widget",
     "storage": [
@@ -199,7 +202,7 @@
   { "id": "gpsrec",
     "name": "GPS Recorder",
     "icon": "app.png",
-    "version":"0.09",
+    "version":"0.10",
     "interface": "interface.html",
     "description": "Application that allows you to record a GPS track. Can run in background",
     "tags": "tool,outdoors,gps,widget",
@@ -798,7 +801,7 @@
     "id": "simpletimer",
     "name": "Timer",
     "icon": "app.png",
-    "version": "0.03",
+    "version": "0.04",
     "description": "Simple timer, useful when playing board games or cooking",
     "tags": "timer",
     "readme": "README.md",
@@ -855,6 +858,18 @@
     "type": "widget",
     "storage": [
       {"name":"widviz.wid.js","url":"widget.js"}
+    ]
+  },
+  { "id": "sleepphasealarm",
+    "name": "SleepPhaseAlarm",
+    "shortName":"SleepPhaseAlarm",
+    "icon": "app.png",
+    "version":"0.01",
+    "description": "Uses the accelerometer to estimate sleep and wake states with the principle of Estimation of Stationary Sleep-segments (ESS, see https://ubicomp.eti.uni-siegen.de/home/datasets/ichi14/index.html.en). This app will read the next alarm from the alarm application and will wake you up to 30 minutes early at the best guessed time when you are almost already awake.",
+    "tags": "alarm",
+    "storage": [
+      {"name":"sleepphasealarm.app.js","url":"app.js"},
+      {"name":"sleepphasealarm.img","url":"app-icon.js","evaluate":true}
     ]
   }
 ]

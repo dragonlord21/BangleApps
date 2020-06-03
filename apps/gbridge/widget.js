@@ -12,6 +12,14 @@
     scrollPos: 0
   };
 
+  function settings() {
+    let settings = require('Storage').readJSON("gbridge.json", true) || {};
+    if (!("showIcon" in settings)) {
+      settings.showIcon = true;
+    }
+    return settings
+  }
+
   function gbSend(message) {
     Bluetooth.println("");
     Bluetooth.println(JSON.stringify(message));
@@ -69,7 +77,7 @@
         var p = MAXCHARS;
         while (p > MAXCHARS - 8 && !" \t-_".includes(l[p]))
           p--;
-        if (p == MAXCHARS - 8) p = MAXCHARS;
+        if (p === MAXCHARS - 8) p = MAXCHARS;
         txt[i] = l.substr(0, p);
         txt.splice(i + 1, 0, l.substr(p));
       }
@@ -102,7 +110,7 @@
     const changed = state.music === event.state
     state.music = event.state
 
-    if (state.music == "play") {
+    if (state.music === "play") {
       showNotification(40, (y) => {
         g.setColor("#ffffff");
         g.drawImage(require("heatshrink").decompress(atob("jEYwILI/EAv/8gP/ARcMgOAASN8h+A/kfwP8n4CD/E/gHgjg/HA=")), 8, y + 8);
@@ -119,14 +127,14 @@
       }, changed);
     }
 
-    if (state.music == "pause") {
+    if (state.music === "pause") {
       hideNotification();
     }
   }
 
   function handleCallEvent(event) {
 
-    if (event.cmd == "accept") {
+    if (event.cmd === "accept") {
       showNotification(40, (y) => {
         g.setColor("#ffffff");
         g.drawImage(require("heatshrink").decompress(atob("jEYwIMJj4CCwACJh4CCCIMOAQMGAQMHAQMDAQMBCIMB4PwgHz/EAn4CBj4CBg4CBgACCAAw=")), 8, y + 8);
@@ -173,7 +181,7 @@
   });
 
   Bangle.on("swipe", (dir) => {
-    if (state.music == "play") {
+    if (state.music === "play") {
       const command = dir > 0 ? "next" : "previous"
       gbSend({ t: "music", n: command });
     }
@@ -183,8 +191,8 @@
     g.setColor(-1);
     if (NRF.getSecurityStatus().connected)
       g.drawImage(require("heatshrink").decompress(atob("i0WwgHExAABCIwJCBYwJEBYkIBQ2ACgvzCwoECx/z/AKDD4WD+YLBEIYKCx//+cvnAKCBwU/mc4/8/HYv//Ev+Y4EEAePn43DBQkzn4rCEIoABBIwKHO4cjmczK42I6mqlqEEBQeIBQaDED4IgDUhi6KaBbmIA==")), this.x + 1, this.y + 1);
-    //else
-      //g.drawImage(require("heatshrink").decompress(atob("i0WwQFC1WgAgYFDAgIFClQFCwEK1W/AoIPB1f+CAMq1f7/WqwQPB/fq1Gq1/+/4dC/2/CAIaB/YbBAAO///qAoX/B4QbBDQQ7BDQQrBAAWoIIIACIIIVC0ECB4cACAZiBAoRtCAoIDBA")), this.x + 1, this.y + 1);
+    else
+      g.drawImage(require("heatshrink").decompress(atob("i0WwQFC1WgAgYFDAgIFClQFCwEK1W/AoIPB1f+CAMq1f7/WqwQPB/fq1Gq1/+/4dC/2/CAIaB/YbBAAO///qAoX/B4QbBDQQ7BDQQrBAAWoIIIACIIIVC0ECB4cACAZiBAoRtCAoIDBA")), this.x + 1, this.y + 1);
   }
 
   function changedConnectionState() {
@@ -192,10 +200,22 @@
     g.flip(); // turns screen on
   }
 
-  NRF.on("connect", changedConnectionState);
-  NRF.on("disconnect", changedConnectionState);
+  function reload() {
+    NRF.removeListener("connect", changedConnectionState);
+    NRF.removeListener("disconnect", changedConnectionState);
+    if (settings().showIcon) {
+      WIDGETS["gbridgew"].width = 24;
+      WIDGETS["gbridgew"].draw = draw;
+      NRF.on("connect", changedConnectionState);
+      NRF.on("disconnect", changedConnectionState);
+    } else {
+      WIDGETS["gbridgew"].width = 0;
+      WIDGETS["gbridgew"].draw = ()=>{};
+    }
+  }
 
-  WIDGETS["gbridgew"] = { area: "tl", width: 24, draw: draw };
+  WIDGETS["gbridgew"] = {area: "tl", width: 24, draw: draw, reload: reload};
+  reload();
 
   function sendBattery() {
     gbSend({ t: "status", bat: E.getBattery() });
