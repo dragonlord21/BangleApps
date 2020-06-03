@@ -2,7 +2,7 @@
   { "id": "boot",
     "name": "Bootloader",
     "icon": "bootloader.png",
-    "version":"0.17",
+    "version":"0.18",
     "description": "This is needed by Bangle.js to automatically load the clock, menu, widgets and settings",
     "tags": "tool,system",
     "type":"bootloader",
@@ -65,7 +65,7 @@
   { "id": "locale",
     "name": "Languages",
     "icon": "locale.png",
-    "version":"0.06",
+    "version":"0.07",
     "description": "Translations for different countries",
     "tags": "tool,system,locale,translate",
     "type": "locale",
@@ -95,7 +95,7 @@
   { "id": "gbridge",
     "name": "Gadgetbridge",
     "icon": "app.png",
-    "version":"0.11",
+    "version":"0.12",
     "description": "The default notification handler for Gadgetbridge notifications from Android",
     "tags": "tool,system,android,widget",
     "type":"widget",
@@ -103,6 +103,9 @@
       {"name":"gbridge.settings.js","url":"settings.js"},
       {"name":"gbridge.img","url":"app-icon.js","evaluate":true},
       {"name":"gbridge.wid.js","url":"widget.js"}
+    ],
+    "data": [
+      {"name":"gbridge.json"}
     ]
   },
   { "id": "mclock",
@@ -137,7 +140,7 @@
     "name": "Default Alarm",
     "shortName":"Alarms",
     "icon": "app.png",
-    "version":"0.08",
+    "version":"0.09",
     "description": "Set and respond to alarms",
     "tags": "tool,alarm,widget",
     "storage": [
@@ -314,7 +317,7 @@
   { "id": "gpsrec",
     "name": "GPS Recorder",
     "icon": "app.png",
-    "version":"0.09",
+    "version":"0.10",
     "interface": "interface.html",
     "description": "Application that allows you to record a GPS track. Can run in background",
     "tags": "tool,outdoors,gps,widget",
@@ -1021,7 +1024,7 @@
     "name": "Commandline-Clock",
     "shortName":"CLI-Clock",
     "icon": "app.png",
-    "version":"0.07",
+    "version":"0.08",
     "description": "Simple CLI-Styled Clock",
     "tags": "clock,cli,command,bash,shell",
     "type":"clock",
@@ -1423,7 +1426,7 @@
     "id": "metronome",
     "name": "Metronome",
     "icon": "metronome_icon.png",
-    "version": "0.05",
+    "version": "0.06",
     "readme": "README.md",
     "description": "Makes the watch blinking and vibrating with a given rate",
     "tags": "tool",
@@ -1811,7 +1814,7 @@
     "name": "Animated Clock",
     "shortName":"Anim Clock",
     "icon": "app.png",
-    "version":"0.01",
+    "version":"0.02",
     "description": "An animated clock face using Mark Ferrari's amazing 8 bit game art and palette cycling: http://www.markferrari.com/art/8bit-game-art",
     "tags": "clock,animated",
     "type": "clock",
@@ -1823,12 +1826,12 @@
       {"name":"animclk.img","url":"app-icon.js","evaluate":true}
     ]
   },
-  { 
+  {
     "id": "verticalface",
     "name": "Vertical watch face",
     "shortName":"Vertical Face",
     "icon": "app.png",
-    "version":"0.4.1",
+    "version":"0.04",
     "description": "A simple vertical watch face with the date.",
     "tags": "clock",
     "type":"clock",
