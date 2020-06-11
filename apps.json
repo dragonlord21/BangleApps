@@ -2,7 +2,7 @@
   { "id": "boot",
     "name": "Bootloader",
     "icon": "bootloader.png",
-    "version":"0.18",
+    "version":"0.19",
     "description": "This is needed by Bangle.js to automatically load the clock, menu, widgets and settings",
     "tags": "tool,system",
     "type":"bootloader",
@@ -38,7 +38,7 @@
     ]
   },
   { "id": "launch",
-    "name": "Default Launcher",
+    "name": "Launcher (Default)",
     "shortName":"Launcher",
     "icon": "app.png",
     "version":"0.03",
@@ -70,10 +70,36 @@
     "tags": "tool,system,locale,translate",
     "type": "locale",
     "custom":"locale.html",
+    "readme": "README.md",
     "storage": [
       {"name":"locale"}
     ],
     "sortorder" : -10
+  },
+  { "id": "notify",
+    "name": "Notifications (default)",
+    "shortName":"Notifications",
+    "icon": "notify.png",
+    "version":"0.01",
+    "description": "A handler for displaying notifications that displays them in a bar at the top of the screen",
+    "tags": "widget",
+    "type": "notify",
+    "readme": "README.md",
+    "storage": [
+      {"name":"notify","url":"notify.js"}
+    ]
+  },
+  { "id": "notifyfs",
+    "name": "Fullscreen Notifications",
+    "shortName":"Notifications",
+    "icon": "notify.png",
+    "version":"0.01",
+    "description": "A handler for displaying notifications that displays them fullscreen. This may not fully restore the screen after on some apps. See `Notifications (default)` for more information about the notifications library.",
+    "tags": "widget",
+    "type": "notify",
+    "storage": [
+      {"name":"notify","url":"notify.js"}
+    ]
   },
   { "id": "welcome",
     "name": "Welcome",
@@ -95,10 +121,11 @@
   { "id": "gbridge",
     "name": "Gadgetbridge",
     "icon": "app.png",
-    "version":"0.12",
+    "version":"0.14",
     "description": "The default notification handler for Gadgetbridge notifications from Android",
     "tags": "tool,system,android,widget",
     "type":"widget",
+    "dependencies": { "notify":"type" },
     "storage": [
       {"name":"gbridge.settings.js","url":"settings.js"},
       {"name":"gbridge.img","url":"app-icon.js","evaluate":true},
@@ -125,7 +152,7 @@
   { "id": "setting",
     "name": "Settings",
     "icon": "settings.png",
-    "version":"0.19",
+    "version":"0.20",
     "description": "A menu for setting up Bangle.js",
     "tags": "tool,system",
     "readme": "README.md",
@@ -387,7 +414,7 @@
   { "id": "weather",
     "name": "Weather",
     "icon": "icon.png",
-    "version":"0.02",
+    "version":"0.03",
     "description": "Show Gadgetbridge weather report",
     "readme": "readme.md",
     "tags": "widget,outdoors",
@@ -1305,7 +1332,7 @@
     "name": "Numerals Clock",
     "shortName": "Numerals Clock",
     "icon": "numerals.png",
-    "version":"0.05",
+    "version":"0.06",
     "description": "A simple big numerals clock",
     "tags": "numerals,clock",
 	"type":"clock",
@@ -1406,7 +1433,7 @@
     "name": "BangleRun",
     "shortName": "BangleRun",
     "icon": "banglerun.png",
-    "version": "0.01",
+    "version": "0.02",
     "description": "An app for running sessions.",
     "tags": "run,running,fitness,outdoors",
     "allow_emulator": false,
@@ -1826,6 +1853,20 @@
       {"name":"animclk.img","url":"app-icon.js","evaluate":true}
     ]
   },
+  { "id": "analogimgclk",
+    "name": "Analog Clock (Image background)",
+    "shortName":"Analog Clock",
+    "icon": "app.png",
+    "version":"0.02",
+    "description": "An analog clock with an image background",
+    "tags": "clock",
+    "type": "clock",
+    "storage": [
+      {"name":"analogimgclk.app.js","url":"app.js"},
+      {"name":"analogimgclk.bg.img","url":"bg.img"},
+      {"name":"analogimgclk.img","url":"app-icon.js","evaluate":true}
+    ]
+  },
   {
     "id": "verticalface",
     "name": "Vertical watch face",
@@ -1852,5 +1893,30 @@
       {"name":"sleepphasealarm.app.js","url":"app.js"},
       {"name":"sleepphasealarm.img","url":"app-icon.js","evaluate":true}
     ]
+  },
+  { "id": "life",
+    "name": "Game of Life",
+    "icon": "life.png",
+    "version":"0.04",
+    "description": "Conway's Game of Life - 16x16 board",
+    "tags": "game",
+    "allow_emulator":true,
+    "storage": [
+      {"name":"life.app.js","url":"life.min.js"},
+      {"name":"life.img","url":"life-icon.js","evaluate":true}
+    ]
+  },
+   { "id": "magnav",
+    "name": "Navigation Compass",
+    "icon": "magnav.png",
+    "version":"0.03",
+    "description": "Compass with linear display as for GPSNAV. Has Tilt compensation and remembers calibration.",
+    "readme": "README.md",
+    "tags": "tool,outdoors",
+    "storage": [
+      {"name":"magnav.app.js","url":"magnav.min.js"},
+      {"name":"magnav.img","url":"magnav-icon.js","evaluate":true}
+    ],
+    "data":[{"name":"magnav.json"}]
   }
 ]
