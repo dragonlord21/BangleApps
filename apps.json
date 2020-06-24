@@ -167,7 +167,7 @@
     "name": "Default Alarm",
     "shortName":"Alarms",
     "icon": "app.png",
-    "version":"0.09",
+    "version":"0.10",
     "description": "Set and respond to alarms",
     "tags": "tool,alarm,widget",
     "storage": [
@@ -882,7 +882,7 @@
   { "id": "boldclk",
     "name": "Bold Clock",
     "icon": "bold_clock.png",
-    "version":"0.02",
+    "version":"0.03",
     "description": "Simple, readable and practical clock",
     "tags": "clock",
     "type":"clock",
@@ -959,6 +959,7 @@
     "name": "Espruino Flag Raiser",
     "icon": "app.png",
     "version":"0.01",
+    "readme": "README.md",
     "description": "App to send a command to another Espruino to cause it to raise a flag",
     "tags": "",
     "storage": [
@@ -1332,7 +1333,7 @@
     "name": "Numerals Clock",
     "shortName": "Numerals Clock",
     "icon": "numerals.png",
-    "version":"0.06",
+    "version":"0.07",
     "description": "A simple big numerals clock",
     "tags": "numerals,clock",
 	"type":"clock",
@@ -1957,6 +1958,52 @@
     "storage": [
       {"name":"miclock2.app.js","url":"clock-mixed.js"},
       {"name":"miclock2.img","url":"clock-mixed-icon.js","evaluate":true}
+    ]
+  },
+  { "id": "1button",
+    "name": "One-Button-Tracker",
+    "icon": "widget.png",
+    "version":"0.01",
+    "interface": "interface.html",
+    "description": "A widget that turns BTN1 into a tracker, records time of button press/release.",
+    "tags": "tool,quantifiedself,widget",
+    "type": "widget",
+    "readme": "README.md",
+    "storage": [
+      {"name":"1button.wid.js","url":"widget.js"}
+    ],
+    "data": [
+      {"name":"one_button_presses.csv","storageFile": true}
+    ]
+  },
+  { "id": "gpsautotime",
+    "name": "GPS auto time",
+    "shortName":"GPS auto time",
+    "icon": "widget.png",
+    "version":"0.01",
+    "description": "A widget that automatically updates the Bangle.js time to the GPS time whenever there is a valid GPS fix.",
+    "tags": "widget,gps",
+    "type": "widget",
+    "storage": [
+      {"name":"gpsautotime.wid.js","url":"widget.js"}
+    ]
+  },
+  { "id": "multiclock",
+    "name": "Multi Clock",
+    "icon": "multiclock.png",
+    "version":"0.06",
+    "description": "Clock with multiple faces - Big, Analogue, Digital, Text.\n Switch between faces with BT1 & BTN3",
+    "readme": "README.md",
+    "tags": "clock",
+    "type":"clock",
+    "allow_emulator":false,
+    "storage": [
+      {"name":"multiclock.app.js","url":"clock.min.js"},
+      {"name":"big.face.js","url":"big.min.js"},
+      {"name":"ana.face.js","url":"ana.min.js"},
+      {"name":"digi.face.js","url":"digi.min.js"},
+      {"name":"txt.face.js","url":"txt.min.js"},
+      {"name":"multiclock.img","url":"multiclock-icon.js","evaluate":true}
     ]
   }
 ]
