@@ -167,7 +167,7 @@
     "name": "Default Alarm",
     "shortName":"Alarms",
     "icon": "app.png",
-    "version":"0.09",
+    "version":"0.10",
     "description": "Set and respond to alarms",
     "tags": "tool,alarm,widget",
     "storage": [
@@ -578,7 +578,7 @@
   { "id": "boldclk",
     "name": "Bold Clock",
     "icon": "bold_clock.png",
-    "version":"0.02",
+    "version":"0.03",
     "description": "Simple, readable and practical clock",
     "tags": "clock",
     "type":"clock",
