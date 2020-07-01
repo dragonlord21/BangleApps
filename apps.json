@@ -41,7 +41,7 @@
     "name": "Launcher (Default)",
     "shortName":"Launcher",
     "icon": "app.png",
-    "version":"0.03",
+    "version":"0.04",
     "description": "This is needed by Bangle.js to display a menu allowing you to choose your own applications. You can replace this with a customised launcher.",
     "tags": "tool,system,launcher",
     "type":"launch",
@@ -121,7 +121,7 @@
   { "id": "gbridge",
     "name": "Gadgetbridge",
     "icon": "app.png",
-    "version":"0.14",
+    "version":"0.15",
     "description": "The default notification handler for Gadgetbridge notifications from Android",
     "tags": "tool,system,android,widget",
     "type":"widget",
@@ -344,7 +344,7 @@
   { "id": "gpsrec",
     "name": "GPS Recorder",
     "icon": "app.png",
-    "version":"0.10",
+    "version":"0.11",
     "interface": "interface.html",
     "description": "Application that allows you to record a GPS track. Can run in background",
     "tags": "tool,outdoors,gps,widget",
@@ -672,6 +672,19 @@
     "storage": [
       {"name":"sclock.app.js","url":"clock-simple.js"},
       {"name":"sclock.img","url":"clock-simple-icon.js","evaluate":true}
+    ]
+  },
+  { "id": "svclock",
+    "name": "Simple V-Clock",
+    "icon": "vclock-simple.png",
+    "version":"0.01",
+    "description": "Modification of Simple Clock 0.04 to use Vectorfont",
+    "tags": "clock",
+    "type":"clock",
+    "allow_emulator":true,
+    "storage": [
+      {"name":"svclock.app.js","url":"vclock-simple.js"},
+      {"name":"svclock.img","url":"vclock-simple-icon.js","evaluate":true}
     ]
   },
   { "id": "dclock",
@@ -1037,11 +1050,11 @@
   { "id": "marioclock",
     "name": "Mario Clock",
     "icon": "marioclock.png",
-    "version":"0.12",
+    "version":"0.13",
     "description": "Animated retro Mario clock, with Gameboy style 8-bit grey-scale graphics.",
     "tags": "clock,mario,retro",
     "type": "clock",
-    "allow_emulator":true,
+    "allow_emulator":false,
     "readme": "README.md",
     "storage": [
       {"name":"marioclock.app.js","url":"marioclock-app.js"},
@@ -1333,7 +1346,7 @@
     "name": "Numerals Clock",
     "shortName": "Numerals Clock",
     "icon": "numerals.png",
-    "version":"0.07",
+    "version":"0.08",
     "description": "A simple big numerals clock",
     "tags": "numerals,clock",
 	"type":"clock",
@@ -1887,7 +1900,7 @@
     "name": "Vertical watch face",
     "shortName":"Vertical Face",
     "icon": "app.png",
-    "version":"0.04",
+    "version":"0.05",
     "description": "A simple vertical watch face with the date.",
     "tags": "clock",
     "type":"clock",
@@ -1988,6 +2001,20 @@
       {"name":"gpsautotime.wid.js","url":"widget.js"}
     ]
   },
+  { "id": "espruinoctrl",
+    "name": "Espruino Control",
+    "shortName":"Espruino Ctrl",
+    "icon": "app.png",
+    "version":"0.01",
+    "description": "Send commands to other Espruino devices via the Bluetooth UART interface. Customisable commands!",
+    "tags": "",
+    "readme": "README.md",
+    "custom": "custom.html",
+    "storage": [
+      {"name":"espruinoctrl.app.js"},
+      {"name":"espruinoctrl.img","url":"app-icon.js","evaluate":true}
+    ]
+  },
   { "id": "multiclock",
     "name": "Multi Clock",
     "icon": "multiclock.png",
@@ -2004,6 +2031,45 @@
       {"name":"digi.face.js","url":"digi.min.js"},
       {"name":"txt.face.js","url":"txt.min.js"},
       {"name":"multiclock.img","url":"multiclock-icon.js","evaluate":true}
+    ]
+  },
+   { "id": "widancs",
+    "name": "Apple Notification Widget",
+    "shortName":"ANCS Widget",
+    "icon": "widget.png",
+    "version":"0.06",
+    "description": "Displays call, message etc notifications from a paired iPhone. Read README before installation as it only works with compatible apps",
+    "readme": "README.md",
+    "tags": "widget",
+    "type": "widget",
+    "storage": [
+      {"name":"widancs.wid.js","url":"ancs.min.js"},
+      {"name":"widancs.settings.js","url":"settings.js"}
+    ]
+  },
+  {
+    "id": "cprassist",
+    "name":"CPR Assist",
+    "icon":"cprassist-icon.png",
+    "version": "0.01",
+    "readme": "README.md",
+    "description": "Provides assistance while performing a CPR",
+    "tags": "tool,firstaid",
+    "allow_emulator": true,
+    "storage": [
+      {
+        "name": "cprassist.app.js",
+        "url": "cprassist.js"
+      },
+      {
+        "name": "cprassist.img",
+        "url": "cprassist-icon.js",
+        "evaluate": true
+      },
+      {
+        "name": "cprassist.settings.js",
+        "url": "settings.js"
+      }
     ]
   }
 ]
