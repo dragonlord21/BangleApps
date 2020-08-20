@@ -62,9 +62,9 @@ exports.show = function(options) {
     g.setColor(-1).setFontAlign(-1, -1, 0).setFont("6x8", 3);
     g.drawString(title.trim().substring(0, 13), x+5, y+3);
     if (options.title && options.src) {
-    g.setColor(-1).setFontAlign(1, 1, 0).setFont("6x8", 2);
-     // above drawing area, but we are fullscreen
-     g.drawString(options.src.substring(0, 10), x+235, y-32);
+      g.setColor(-1).setFontAlign(1, 1, 0).setFont("6x8", 2);
+      // above drawing area, but we are fullscreen
+      g.drawString(options.src.substring(0, 10), x+235, y-32);
     }
     y += 30;h -= 30;
   }

@@ -72,11 +72,11 @@ exports.show = function(options) {
   if (size>80) {size = 80}
   const oldMode = Bangle.getLCDMode();
   // TODO: throw exception if double-buffered?
-    // TODO: throw exception if size>80?
+  // TODO: throw exception if size>80?
 
   Bangle.setLCDMode("direct");
-    // drawing area
-    let x = 0,
+  // drawing area
+  let x = 0,
     y = 320-size,
     w = 240,
     h = size,

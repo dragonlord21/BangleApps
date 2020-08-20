@@ -13,7 +13,7 @@ if (s.ble!==false) {
 if (s.blerepl===false) { // If not programmable, force terminal off Bluetooth
   if (s.log) Terminal.setConsole(true); // if showing debug, force REPL onto terminal
   else E.setConsole(null,{force:true}); // on new (2v05+) firmware we have E.setConsole which allows a 'null' console
-    /* If not programmable add our own handler for Bluetooth data
+  /* If not programmable add our own handler for Bluetooth data
   to allow Gadgetbridge commands to be received*/
   Bluetooth.line="";
   Bluetooth.on('data',function(d) {

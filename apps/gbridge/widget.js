@@ -105,7 +105,7 @@
             g.setFont("4x6", 2).drawString(state.musicInfo.artist, x, y+8);
             g.setFont("6x8", 1).drawString(state.musicInfo.track, x, y+22);
           }
-                }}, options));
+        }}, options));
     }
 
     if (state.music === "pause") {
