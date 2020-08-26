@@ -361,7 +361,7 @@
   { "id": "gpsnav",
     "name": "GPS Navigation",
     "icon": "icon.png",
-    "version":"0.03",
+    "version":"0.04",
     "description": "Displays GPS Course and Speed, + Directions to waypoint and waypoint recording, now with waypoint editor",
     "tags": "tool,outdoors,gps",
     "readme": "README.md",
@@ -1068,7 +1068,7 @@
   { "id": "marioclock",
     "name": "Mario Clock",
     "icon": "marioclock.png",
-    "version":"0.13",
+    "version":"0.14",
     "description": "Animated retro Mario clock, with Gameboy style 8-bit grey-scale graphics.",
     "tags": "clock,mario,retro",
     "type": "clock",
@@ -2143,11 +2143,24 @@
     {"name": "counter.img", "url": "counter-icon.js", "evaluate": true}
    ]
   },
+  { "id": "bootgattbat",
+    "name": "BLE GATT Battery Service",
+    "shortName":"BLE Battery Service",
+    "icon": "bluetooth.png",
+    "version":"0.01",
+    "description": "Adds the GATT Battery Service to advertise the percentage of battery currently remaining over Bluetooth.\n",
+    "tags": "battery,ble,bluetooth,gatt",
+    "type": "bootloader",
+    "readme": "README.md",
+    "storage": [
+      {"name":"gattbat.boot.js","url":"boot.js"}
+    ]
+  },
   { "id": "viewstl",
   "name": "STL file viewer",
   "shortName":"ViewSTL",
   "icon": "icons8-octahedron-48.png",
-  "version":"0.01",
+  "version":"0.02",
   "description": "This app allows you to view STL 3D models on your watch",
   "tags": "tool",
   "readme": "README.md",
@@ -2158,5 +2171,21 @@
     {"name":"cube.stl","url":"cube.stl"},
     {"name":"icosa.stl","url":"icosa.stl"}
   ]
+ },
+ { "id": "worldclock",
+    "name": "World Clock - 4 time zones",
+    "shortName":"World Clock",
+    "icon": "app.png",
+    "version":"0.01",
+    "description": "Current time zone plus up to four others",
+    "tags": "clock",
+    "type" : "clock",
+    "custom": "custom.html",
+    "storage": [
+      {"name":"worldclock.app.js","url":"app.js"},
+      {"name":"worldclock.settings.json"},
+      {"name":"worldclock.img","url":"worldclock-icon.js","evaluate":true}
+  ]
  }
 ]
+
