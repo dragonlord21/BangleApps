@@ -18,7 +18,7 @@ var RECOMMENDED_VERSION = "2v08";
   let username = "dragonlord21";
   let branch = "Bangle_LCARS";
   let githubMatch = window.location.href.match(/\/(\w+)\.github\.io/);
-  if (githubMatch) username = githubMatch[1];
+  //if (githubMatch) username = githubMatch[1];
   Const.APP_SOURCECODE_URL = `https://github.com/${username}/BangleApps/tree/${branch}/apps`;
 })();
 
