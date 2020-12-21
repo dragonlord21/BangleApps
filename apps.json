@@ -65,7 +65,7 @@
   { "id": "locale",
     "name": "Languages",
     "icon": "locale.png",
-    "version":"0.07",
+    "version":"0.08",
     "description": "Translations for different countries",
     "tags": "tool,system,locale,translate",
     "type": "locale",
@@ -121,9 +121,10 @@
   { "id": "gbridge",
     "name": "Gadgetbridge",
     "icon": "app.png",
-    "version":"0.17",
+    "version":"0.18",
     "description": "The default notification handler for Gadgetbridge notifications from Android",
     "tags": "tool,system,android,widget",
+    "readme": "README.md",
     "type":"widget",
     "dependencies": { "notify":"type" },
     "storage": [
@@ -229,14 +230,15 @@
   { "id": "gpsrec",
     "name": "GPS Recorder",
     "icon": "app.png",
-    "version":"0.12",
+    "version":"0.16",
     "interface": "interface.html",
     "description": "Application that allows you to record a GPS track. Can run in background",
     "tags": "tool,outdoors,gps,widget",
     "storage": [
       {"name":"gpsrec.app.js","url":"app.js"},
       {"name":"gpsrec.img","url":"app-icon.js","evaluate":true},
-      {"name":"gpsrec.wid.js","url":"widget.js"}
+      {"name":"gpsrec.wid.js","url":"widget.js"},
+      {"name":"gpsrec.settings.js","url":"settings.js"}
     ],
     "data": [
       {"name":"gpsrec.json"},
@@ -246,13 +248,13 @@
   { "id": "gpsnav",
     "name": "GPS Navigation",
     "icon": "icon.png",
-    "version":"0.04",
+    "version":"0.05",
     "description": "Displays GPS Course and Speed, + Directions to waypoint and waypoint recording, now with waypoint editor",
     "tags": "tool,outdoors,gps",
     "readme": "README.md",
     "interface":"waypoints.html",
     "storage": [
-      {"name":"gpsnav.app.js","url":"app.js"},
+      {"name":"gpsnav.app.js","url":"app.min.js"},
       {"name":"waypoints.json","url":"waypoints.json","evaluate":false},
       {"name":"gpsnav.img","url":"app-icon.js","evaluate":true}
     ]
@@ -367,8 +369,8 @@
   { "id": "hrm",
     "name": "Heart Rate Monitor",
     "icon": "heartrate.png",
-    "version":"0.01",
-    "description": "Measure your current heart rate",
+    "version":"0.02",
+    "description": "Measure your heart rate and see live sensor data",
     "tags": "health",
     "storage": [
       {"name":"hrm.app.js","url":"heartrate.js"},
@@ -712,11 +714,12 @@
     "name": "OpenStreetMap",
     "shortName":"OpenStMap",
     "icon": "app.png",
-    "version":"0.03",
+    "version":"0.05",
     "description": "[BETA] Loads map tiles from OpenStreetMap onto your Bangle.js and displays a map of where you are",
     "tags": "outdoors,gps",
     "custom": "custom.html",
     "storage": [
+      {"name":"openstmap","url":"openstmap.js"},
       {"name":"openstmap.app.js","url":"app.js"},
       {"name":"openstmap.img","url":"app-icon.js","evaluate":true}
     ]
@@ -920,7 +923,7 @@
    { "id": "magnav",
     "name": "Navigation Compass",
     "icon": "magnav.png",
-    "version":"0.03",
+    "version":"0.04",
     "description": "Compass with linear display as for GPSNAV. Has Tilt compensation and remembers calibration.",
     "readme": "README.md",
     "tags": "tool,outdoors",
