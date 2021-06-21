@@ -4,11 +4,12 @@
     "tags": "tool,system",
     "type":"bootloader",
     "icon": "bootloader.png",
-    "version":"0.22",
+    "version":"0.26",
     "description": "This is needed by Bangle.js to automatically load the clock, menu, widgets and settings",
     "storage": [
       {"name":".boot0","url":"boot0.js"},
-      {"name":".bootcde","url":"bootloader.js"}
+      {"name":".bootcde","url":"bootloader.js"},
+      {"name":"bootupdate.js","url":"bootupdate.js"}
     ],
     "sortorder" : -10
   },
@@ -41,7 +42,7 @@
     "name": "Launcher (Default)",
     "shortName":"Launcher",
     "icon": "app.png",
-    "version":"0.04",
+    "version":"0.06",
     "description": "This is needed by Bangle.js to display a menu allowing you to choose your own applications. You can replace this with a customised launcher.",
     "tags": "tool,system,launcher",
     "type":"launch",
@@ -53,7 +54,7 @@
   { "id": "about",
     "name": "About",
     "icon": "app.png",
-    "version":"0.06",
+    "version":"0.08",
     "description": "Bangle.js About page - showing software version, stats, and a collaborative mural from the Bangle.js KickStarter backers",
     "tags": "tool,system",
     "allow_emulator":true,
@@ -65,7 +66,7 @@
   { "id": "locale",
     "name": "Languages",
     "icon": "locale.png",
-    "version":"0.08",
+    "version":"0.09",
     "description": "Translations for different countries",
     "tags": "tool,system,locale,translate",
     "type": "locale",
@@ -80,7 +81,7 @@
     "name": "Notifications (default)",
     "shortName":"Notifications",
     "icon": "notify.png",
-    "version":"0.05",
+    "version":"0.08",
     "description": "A handler for displaying notifications that displays them in a bar at the top of the screen",
     "tags": "widget",
     "type": "notify",
@@ -93,7 +94,7 @@
     "name": "Fullscreen Notifications",
     "shortName":"Notifications",
     "icon": "notify.png",
-    "version":"0.06",
+    "version":"0.08",
     "description": "A handler for displaying notifications that displays them fullscreen. This may not fully restore the screen after on some apps. See `Notifications (default)` for more information about the notifications library.",
     "tags": "widget",
     "type": "notify",
@@ -104,7 +105,7 @@
   { "id": "welcome",
     "name": "Welcome",
     "icon": "app.png",
-    "version":"0.09",
+    "version":"0.10",
     "description": "Appears at first boot and explains how to use Bangle.js",
     "tags": "start,welcome",
     "allow_emulator":true,
@@ -121,7 +122,7 @@
   { "id": "gbridge",
     "name": "Gadgetbridge",
     "icon": "app.png",
-    "version":"0.18",
+    "version":"0.22",
     "description": "The default notification handler for Gadgetbridge notifications from Android",
     "tags": "tool,system,android,widget",
     "readme": "README.md",
@@ -153,14 +154,16 @@
   { "id": "setting",
     "name": "Settings",
     "icon": "settings.png",
-    "version":"0.23",
+    "version":"0.26",
     "description": "A menu for setting up Bangle.js",
     "tags": "tool,system",
     "readme": "README.md",
     "storage": [
       {"name":"setting.app.js","url":"settings.js"},
-      {"name":"setting.boot.js","url":"boot.js"},
       {"name":"setting.img","url":"settings-icon.js","evaluate":true}
+    ],
+    "data": [
+      {"name":"setting.json", "url":"settings.min.json","evaluate":true}
     ],
     "sortorder" : -2
   },
@@ -168,7 +171,7 @@
     "name": "Default Alarm",
     "shortName":"Alarms",
     "icon": "app.png",
-    "version":"0.10",
+    "version":"0.11",
     "description": "Set and respond to alarms",
     "tags": "tool,alarm,widget",
     "storage": [
@@ -230,10 +233,11 @@
   { "id": "gpsrec",
     "name": "GPS Recorder",
     "icon": "app.png",
-    "version":"0.16",
+    "version":"0.21",
     "interface": "interface.html",
     "description": "Application that allows you to record a GPS track. Can run in background",
     "tags": "tool,outdoors,gps,widget",
+    "readme": "README.md",
     "storage": [
       {"name":"gpsrec.app.js","url":"app.js"},
       {"name":"gpsrec.img","url":"app-icon.js","evaluate":true},
@@ -255,14 +259,16 @@
     "interface":"waypoints.html",
     "storage": [
       {"name":"gpsnav.app.js","url":"app.min.js"},
-      {"name":"waypoints.json","url":"waypoints.json","evaluate":false},
       {"name":"gpsnav.img","url":"app-icon.js","evaluate":true}
+    ],
+    "data": [
+      {"name":"waypoints.json","url":"waypoints.json"}
     ]
   },
   { "id": "heart",
     "name": "Heart Rate Recorder",
     "icon": "app.png",
-    "version":"0.02",
+    "version":"0.05",
     "interface": "interface.html",
     "description": "Application that allows you to record your heart rate. Can run in background",
     "tags": "tool,health,widget",
@@ -319,7 +325,7 @@
   { "id": "widbat",
     "name": "Battery Level Widget",
     "icon": "widget.png",
-    "version":"0.05",
+    "version":"0.06",
     "description": "Show the current battery level and charging status in the top right of the clock",
     "tags": "widget,battery",
     "type":"widget",
@@ -369,7 +375,7 @@
   { "id": "hrm",
     "name": "Heart Rate Monitor",
     "icon": "heartrate.png",
-    "version":"0.02",
+    "version":"0.04",
     "description": "Measure your heart rate and see live sensor data",
     "tags": "health",
     "storage": [
@@ -464,7 +470,7 @@
   { "id": "route",
     "name": "Route Viewer",
     "icon": "app.png",
-    "version":"0.01",
+    "version":"0.02",
     "description": "Upload a KML file of a route, and have your watch display a map with how far around it you are",
     "tags": "",
     "custom": "custom.html",
@@ -604,7 +610,7 @@
   { "id": "widpedom",
     "name": "Pedometer widget",
     "icon": "widget.png",
-    "version":"0.11",
+    "version":"0.13",
     "description": "Daily pedometer widget",
     "tags": "widget",
     "type":"widget",
@@ -666,10 +672,11 @@
   { "id": "barclock",
     "name": "Bar Clock",
     "icon": "clock-bar.png",
-    "version":"0.05",
+    "version":"0.06",
     "description": "A simple digital clock showing seconds as a bar",
     "tags": "clock",
     "type":"clock",
+    "readme": "README.md",
     "allow_emulator":true,
     "storage": [
       {"name":"barclock.app.js","url":"clock-bar.js"},
@@ -714,7 +721,7 @@
     "name": "OpenStreetMap",
     "shortName":"OpenStMap",
     "icon": "app.png",
-    "version":"0.05",
+    "version":"0.06",
     "description": "[BETA] Loads map tiles from OpenStreetMap onto your Bangle.js and displays a map of where you are",
     "tags": "outdoors,gps",
     "custom": "custom.html",
@@ -728,7 +735,7 @@
     "name": "Active Pedometer",
     "shortName":"Active Pedometer",
     "icon": "app.png",
-    "version":"0.07",
+    "version":"0.09",
     "description": "Pedometer that filters out arm movement and displays a step goal progress. Steps are saved to a daily file and can be viewed as graph.",
     "tags": "outdoors,widget",
      "readme": "README.md",
@@ -767,9 +774,9 @@
   {
     "id": "rclock",
     "name": "Round clock with seconds,  minutes and date",
-    "shortName":"Round Clock",
+    "shortName": "Round Clock",
     "icon": "app.png",
-    "version":"0.03",
+    "version": "0.05",
     "description": "Designed round clock with ticks for minutes and seconds and heart rate indication",
     "tags": "clock",
     "type": "clock",
@@ -900,7 +907,7 @@
     "name": "SleepPhaseAlarm",
     "shortName":"SleepPhaseAlarm",
     "icon": "app.png",
-    "version":"0.01",
+    "version":"0.02",
     "description": "Uses the accelerometer to estimate sleep and wake states with the principle of Estimation of Stationary Sleep-segments (ESS, see https://ubicomp.eti.uni-siegen.de/home/datasets/ichi14/index.html.en). This app will read the next alarm from the alarm application and will wake you up to 30 minutes early at the best guessed time when you are almost already awake.",
     "tags": "alarm",
     "storage": [
@@ -932,5 +939,5 @@
       {"name":"magnav.img","url":"magnav-icon.js","evaluate":true}
     ],
     "data":[{"name":"magnav.json"}]
-  }
+}
 ]
