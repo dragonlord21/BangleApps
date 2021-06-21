@@ -1,21 +1,102 @@
 /**
-* Adrian Kirk 2021-02
-* Sliding text clock inspired by the Pebble
-* clock with the same name
-*/
+ * Adrian Kirk 2021-02
+ * Sliding text clock inspired by the Pebble
+ * clock with the same name
+ */
 
+const color_schemes = [
+  {
+    name: "black",
+    background : [0.0,0.0,0.0],
+    main_bar: [1.0,1.0,1.0],
+    other_bars: [0.85,0.85,0.85],
+  },
+  {
+    name: "red",
+    background : [1.0,0.0,0.0],
+    main_bar: [1.0,1.0,0.0],
+    other_bars: [0.85,0.85,0.85]
+  },
+  {
+    name: "grey",
+    background : [0.5,0.5,0.5],
+    main_bar: [1.0,1.0,1.0],
+    other_bars: [0.0,0.0,0.0],
+  },
+  {
+    name: "purple",
+    background : [1.0,0.0,1.0],
+    main_bar: [1.0,1.0,0.0],
+    other_bars: [0.85,0.85,0.85]
+  },
+  {
+    name: "blue",
+    background : [0.4,0.7,1.0],
+    main_bar: [1.0,1.0,1.0],
+    other_bars: [0.9,0.9,0.9]
+  }
+];
+
+let color_scheme_index = 0;
+
+
+/**
+ * The Watch Display
+ */
+
+function bg_color(){
+  return color_schemes[color_scheme_index].background;
+}
+
+function main_color(){
+  return color_schemes[color_scheme_index].main_bar;
+}
+
+function other_color(){
+  return color_schemes[color_scheme_index].other_bars;
+}
+
+let command_stack_high_priority = [];
+let command_stack_low_priority = [];
+
+function next_command(){
+  command = command_stack_high_priority.pop();
+  if(command == null){
+    //console.log("Low priority command");
+    command = command_stack_low_priority.pop();
+  } else {
+    //console.log("High priority command");
+  }
+  if(command != null){
+    command.call();
+  } else {
+    //console.log("no command");
+  }
+}
+
+function reset_commands(){
+  command_stack_high_priority = [];
+  command_stack_low_priority = [];
+}
+
+function has_commands(){
+  return  command_stack_high_priority.length > 0 ||
+      command_stack_low_priority.lenth > 0;
+}
 
 class ShiftText {
   /**
-  * Class Responsible for shifting text around the screen
-  *
-  * This is a object that initializes itself with a position and
-  * text after which you can tell it where you want to move to
-  * using the moveTo method and it will smoothly move the text across
-  * at the selected frame rate and speed
-  */
+   * Class Responsible for shifting text around the screen
+   *
+   * This is a object that initializes itself with a position and
+   * text after which you can tell it where you want to move to
+   * using the moveTo method and it will smoothly move the text across
+   * at the selected frame rate and speed
+   */
   constructor(x,y,txt,font_name,
-              font_size,speed_x,speed_y,freq_millis, color){
+              font_size,speed_x,speed_y,freq_millis,
+              color,
+              bg_color){
     this.x = x;
     this.tgt_x = x;
     this.init_x = x;
@@ -29,29 +110,48 @@ class ShiftText {
     this.speed_x = Math.abs(speed_x);
     this.speed_y = Math.abs(speed_y);
     this.freq_millis = freq_millis;
-    this.colour = color;
+    this.color = color;
+    this.bg_color = bg_color;
     this.finished_callback=null;
     this.timeoutId = null;
   }
-  reset(){
+  setColor(color){
+    this.color = color;
+  }
+  setBgColor(bg_color){
+    this.bg_color = bg_color;
+  }
+  reset(hard_reset) {
+    //console.log("reset");
     this.hide();
     this.x = this.init_x;
     this.y = this.init_y;
-    this.txt = this.init_txt;
+    if (hard_reset) {
+      this.txt = this.init_txt;
+    }
     this.show();
     if(this.timeoutId != null){
-       clearTimeout(this.timeoutId);
+      clearTimeout(this.timeoutId);
     }
   }
   show() {
+    g.setFontAlign(-1,-1,0);
     g.setFont(this.font_name,this.font_size);
-    g.setColor(this.colour[0],this.colour[1],this.colour[2]);
+    g.setColor(this.color[0],this.color[1],this.color[2]);
     g.drawString(this.txt, this.x, this.y);
   }
   hide(){
+    g.setFontAlign(-1,-1,0);
     g.setFont(this.font_name,this.font_size);
-    g.setColor(0,0,0);
+    //console.log("bgcolor:" + this.bg_color);
+    g.setColor(this.bg_color[0],this.bg_color[1],this.bg_color[2]);
     g.drawString(this.txt, this.x, this.y);
+    /*g.fillPoly([this.x - 1, this.y,
+              240, this.y,
+              240, this.y + this.font_size,
+              this.x -1 , this.y + this.font_size,
+             ]);
+             */
   }
   setText(txt){
     this.txt = txt;
@@ -92,15 +192,15 @@ class ShiftText {
     this.finished_callback = finished_callback;
   }
   /**
-  * private internal method for directing the text move.
-  * It will see how far away we are from the target coords
-  * and move towards the target at the defined speed.
-  */
+   * private internal method for directing the text move.
+   * It will see how far away we are from the target coords
+   * and move towards the target at the defined speed.
+   */
   _doMove(){
     this.hide();
     // move closer to the target in the x direction
-    diff_x = this.tgt_x - this.x;
-    finished_x = false;
+    var diff_x = this.tgt_x - this.x;
+    var finished_x = false;
     if(Math.abs(diff_x) <= this.speed_x){
       this.x = this.tgt_x;
       finished_x = true;
@@ -112,8 +212,8 @@ class ShiftText {
       }
     }
     // move closer to the target in the y direction
-    diff_y = this.tgt_y - this.y;
-    finished_y = false;
+    var diff_y = this.tgt_y - this.y;
+    var finished_y = false;
     if(Math.abs(diff_y) <= this.speed_y){
       this.y = this.tgt_y;
       finished_y = true;
@@ -126,234 +226,91 @@ class ShiftText {
     }
     this.show();
     this.timeoutId = null;
-    finished = finished_x & finished_y;
+    var finished = finished_x & finished_y;
     if(!finished){
       this.timeoutId = setTimeout(this._doMove.bind(this), this.freq_millis);
     } else if(this.finished_callback != null){
+      //console.log("finished - calling:" + this.finished_callback);
       this.finished_callback.call();
       this.finished_callback = null;
     }
   }
 }
 
-class DateFormatter {
-  /**
-  * A pure virtual class which all the other date formatters will
-  * inherit from.
-  * The name will be used to declare the date format when selected
-  * and the date formatDate methid will return the time formated
-  * to the lines of text on the screen
-  */
-  name(){"no name";}
-  formatDate(date){
-    return ["","",""];
-  }
-}
-
-/**
-* English date formatting
-*/
-
-// English String Numbers
-const numberStr = ["ZERO","ONE", "TWO", "THREE", "FOUR", "FIVE",
-                 "SIX", "SEVEN","EIGHT", "NINE", "TEN",
-                 "ELEVEN", "TWELVE", "THIRTEEN", "FOURTEEN",
-                  "FIFTEEN", "SIXTEEN", "SEVENTEEN", "EIGHTEEN",
-                  "NINETEEN", "TWENTY"];
-const tensStr = ["ZERO", "TEN", "TWENTY", "THIRTY", "FOURTY",
-                 "FIFTY"];
-
-function hoursToText(hours){
-  hours = hours % 12;
-  if(hours == 0){
-    hours = 12;
-  }
-  return numberStr[hours];
-}
-
-function numberToText(value){
-  word1 = '';
-  word2 = '';
-  if(value > 20){
-    tens = (value / 10 | 0);
-    word1 = tensStr[tens];
-    remainder = value - tens * 10;
-    if(remainder > 0){
-      word2 = numberStr[remainder];
-    }
-  } else if(value > 0) {
-    word1 = numberStr[value];
-  }
-  return [word1,word2];
-}
-
-class EnglishDateFormatter extends DateFormatter{
-  name(){return "English";}
-  formatDate(date){
-    hours_txt = hoursToText(date.getHours());
-    mins_txt = numberToText(date.getMinutes());
-    return [hours_txt,mins_txt[0],mins_txt[1]];
-  }
-}
-
-/**
-* French date formatting
-*/
-const frenchNumberStr = [ "ZERO", "UNE", "DEUX", "TROIS", "QUATRE",
-                          "CINQ", "SIX", "SEPT", "HUIT", "NEUF", "DIX",
-                          "ONZE", "DOUZE", "TREIZE", "QUATORZE","QUINZE", 
-                          "SEIZE", "DIX SEPT", "DIX HUIT","DIX NEUF", "VINGT",
-                         "VINGT ET UN", "VINGT DEUX", "VINGT TROIS", 
-                         "VINGT QUATRE", "VINGT CINQ", "VINGT SIX",
-                         "VINGT SEPT", "VINGT HUIT", "VINGT NEUF"
-                        ];
-
-function frenchHoursToText(hours){
-  hours = hours % 12;
-  if(hours == 0){
-    hours = 12;
-  }
-  return frenchNumberStr[hours];
-}
-
-function frenchHeures(hours){
-  if(hours % 12 == 1){
-    return 'HEURE';
-  } else {
-    return 'HEURES';
-  }
-}
-
-class FrenchDateFormatter extends DateFormatter {
-  constructor() {
-    super();
-  }
-  name(){return "French";}
-  formatDate(date){
-    hours = frenchHoursToText(date.getHours());
-    heures = frenchHeures(date.getHours());
-    mins = date.getMinutes();
-    if(mins == 0){
-      if(hours == 0){
-        return ["MINUIT", "",""];
-      } else if(hours == 12){
-        return ["MIDI", "",""];
-      } else {
-        return [hours, heures,""];
-      }
-    } else if(mins == 30){
-      return [hours, heures,'ET DEMIE'];
-    } else if(mins == 15){
-      return [hours, heures,'ET QUERT'];
-    } else if(mins == 45){
-      next_hour = date.getHours()  + 1;
-      hours = frenchHoursToText(next_hour);
-      heures = frenchHeures(next_hour);
-      return [hours, heures,"MOINS",'LET QUERT'];
-    }
-    if(mins > 30){
-      to_mins = 60-mins;
-      mins_txt = frenchNumberStr[to_mins];
-      next_hour = date.getHours()  + 1;
-      hours = frenchHoursToText(next_hour);
-      heures = frenchHeures(next_hour);
-      return [ hours, heures , "MOINS", mins_txt ];
-    } else {
-      mins_txt = frenchNumberStr[mins];
-      return [ hours, heures , mins_txt ];
-    } 
-  }
-}
-
-/**
-* Japanese date formatting
-*/
-const japaneseHourStr = [ "ZERO", "ICHII", "NI", "SAN", "YO",
-                          "GO", "ROKU", "SHICHI", "HACHI", "KU", "JUU",
-                          'JUU ICHI', 'JUU NI'];
-const tensPrefixStr = [ "",
-                         "JUU",
-                         'NIJUU',
-                         'SAN JUU',
-                         'YON JUU',
-                         'GO JUU'];
-
-const japaneseMinuteStr = [ ["", "PUN"],
-                            ["IP","PUN" ],
-                            ["NI", "FUN"],
-                            ["SAN", "PUN"],
-                            ["YON","FUN"],
-                            ["GO", "HUN"],
-                            ["RO", "PUN"],
-                            ["NANA", "FUN"],
-                            ["HAP", "PUN"],
-                            ["KYU","FUN"],
-                            ["JUP", "PUN"]
-                          ];
-
-function japaneseHoursToText(hours){
-  hours = hours % 12;
-  if(hours == 0){
-    hours = 12;
-  }
-  return japaneseHourStr[hours];
-}
-
-function japaneseMinsToText(mins){
-  if(mins == 0){
-    return ["",""];
-  } else if(mins == 30)
-    return ["HAN",""];
-  else {
-    units = mins % 10;
-    mins_txt = japaneseMinuteStr[units];
-    tens = mins /10 | 0;
-    if(tens > 0){
-      tens_txt = tensPrefixStr[tens];
-      return [tens_txt + ' ' + mins_txt[0],  mins_txt[1]];
-    } else {
-      return [mins_txt[0],  mins_txt[1]];
-    }
-  }
-}
-
-class JapaneseDateFormatter extends DateFormatter {
-  constructor() {
-    super();
-  }
-  name(){return "Japanese (Romanji)";}
-  formatDate(date){
-    hours_txt = japaneseHoursToText(date.getHours());
-    mins_txt = japaneseMinsToText(date.getMinutes());
-    return [hours_txt,"JI", mins_txt[0], mins_txt[1] ];
-  }
-}
-
-/**
-* The Watch Display
-*/
-
-// a list of display rows 
-let row_displays = [ 
-  new ShiftText(240,60,'',"Vector",40,10,10,40,[1,1,1]),
-  new ShiftText(240,100,'',"Vector",20,10,10,50,[0.85,0.85,0.85]),
-  new ShiftText(240,120,'',"Vector",20,10,10,60,[0.85,0.85,0.85]),
-  new ShiftText(240,140,'',"Vector",20,10,10,70,[0.85,0.85,0.85])
+const CLOCK_TEXT_SPEED_X = 10;
+// a list of display rows
+let row_displays = [
+  new ShiftText(240,50,'',"Vector",40,CLOCK_TEXT_SPEED_X,1,10,main_color(),bg_color()),
+  new ShiftText(240,90,'',"Vector",30,CLOCK_TEXT_SPEED_X,1,10,other_color(),bg_color()),
+  new ShiftText(240,120,'',"Vector",30,CLOCK_TEXT_SPEED_X,1,10,other_color(),bg_color()),
+  new ShiftText(240,150,'',"Vector",30,CLOCK_TEXT_SPEED_X,1,10,other_color(),bg_color()),
+  new ShiftText(240,180,'',"Vector",40,CLOCK_TEXT_SPEED_X,1,10,main_color(),bg_color())
 ];
 
-// a list of the formatters to cycle through
-let date_formatters = [
-    new EnglishDateFormatter(),
-    new FrenchDateFormatter(),
-    new JapaneseDateFormatter()
-  ];
+function nextColorTheme(){
+  //console.log("next color theme");
+  color_scheme_index += 1;
+  if(color_scheme_index >= row_displays.length){
+    color_scheme_index = 0;
+  }
+  setColorScheme(color_schemes[color_scheme_index]);
+  reset_clock(true);
+  draw_clock();
+}
+
+function setColorScheme(color_scheme){
+  setColor(color_scheme.main_bar,
+      color_scheme.other_bars,
+      color_scheme.background);
+}
+
+function setColor(main_color,other_color,bg_color){
+  row_displays[0].setColor(main_color);
+  row_displays[0].setBgColor(bg_color);
+  for(var i=1; i<row_displays.length - 1; i++){
+    row_displays[i].setColor(other_color);
+    row_displays[i].setBgColor(bg_color);
+  }
+  row_displays[row_displays.length - 1].setColor(main_color);
+  row_displays[row_displays.length - 1].setBgColor(bg_color);
+  g.setColor(bg_color[0],bg_color[1],bg_color[2]);
+  g.fillPoly([0,25,
+    0,240,
+    240,240,
+    240,25
+  ]);
+}
+
+// load the date formats and laguages required
+LANGUAGES_FILE = "slidingtext.languages.json";
+var LANGUAGES_DEFAULT = ["en","en2"];
+var locales = null;
+try{
+  locales = require("Storage").readJSON(LANGUAGES_FILE);
+  if(locales != null){
+    console.log("loaded languages:" + JSON.stringify(locales));
+  } else {
+    console.log("no languages loaded");
+    locales = LANGUAGES_DEFAULT;
+  }
+} catch(e){
+  console.log("failed to load languages:" + e);
+}
+if(locales == null || locales.length == 0){
+  locales = LANGUAGES_DEFAULT;
+  console.log("defaulting languages to locale:" + locales);
+}
+
+let date_formatters = [];
+for(var i=0; i< locales.length; i++){
+  console.log("loading locale:" + locales[i]);
+  var Formatter = require("slidingtext.locale." + locales[i] + ".js");
+  date_formatters.push(new Formatter());
+}
 
 // current index of the date formatter to display
 let date_formatter_idx = 0;
 let date_formatter = date_formatters[date_formatter_idx];
-
-// The small display at the top which announces the date format
-let format_name_display = new ShiftText(55,0,'',"Vector",10,1,1,50,[1,1,1]);
 
 function changeFormatter(){
   date_formatter_idx += 1;
@@ -362,101 +319,307 @@ function changeFormatter(){
   }
   console.log("changing to formatter " + date_formatter_idx);
   date_formatter = date_formatters[date_formatter_idx];
-  reset_clock();
+  reset_clock(true);
   draw_clock();
-  // now announce the formatter by name
-  format_name_display.setTextYPosition(date_formatter.name(),-10);
-  format_name_display.moveToY(15);
-  // and then move back
-  format_name_display.onFinished(
-      function(){
-        format_name_display.moveToY(-10);
+  command_stack_high_priority.unshift(
+      function() {
+        //console.log("move in new:" + txt);
+        // first select the top or bottom to display the formatter name
+        // We choose the first spare row without text
+        var format_name_display = row_displays[row_displays.length - 1];
+        if (format_name_display.txt != '') {
+          format_name_display = row_displays[0];
+        }
+        if (format_name_display.txt != ''){
+          return;
+        }
+        format_name_display.speed_x = 3;
+        format_name_display.onFinished(function(){
+          format_name_display.speed_x = CLOCK_TEXT_SPEED_X;
+          console.log("return speed to:" + format_name_display.speed_x)
+          next_command();
+        });
+        format_name_display.setTextXPosition(date_formatter.name(),220);
+        format_name_display.moveToX(-date_formatter.name().length * format_name_display.font_size);
       }
-    );
+  );
+
 }
 
-function reset_clock(){
-  //console.log("reset_clock");
-  var i;
-  for (i = 0; i < row_displays.length; i++) {
-    row_displays[i].reset();
+var DISPLAY_TEXT_X = 20;
+function reset_clock(hard_reset){
+  console.log("reset_clock hard_reset:" + hard_reset);
+
+  setColorScheme(color_schemes[color_scheme_index]);
+  if(!hard_reset && last_draw_time != null){
+    // If its not a hard reset then we want to reset the
+    // rows set to the last time. If the last time is too long
+    // ago then we fast forward to 1 min ago.
+    // In this way the watch wakes by scrolling
+    // off the last time and scroll on the new time
+    var reset_time = last_draw_time;
+    var last_minute_millis = Date.now() - 60000;
+    if(reset_time.getTime() < last_minute_millis){
+      reset_time = display_time(new Date(last_minute_millis));
+    }
+    var rows = date_formatter.formatDate(reset_time);
+    for (var i = 0; i < rows.length; i++) {
+      row_displays[i].hide();
+      row_displays[i].speed_x = CLOCK_TEXT_SPEED_X;
+      row_displays[i].x = DISPLAY_TEXT_X;
+      row_displays[i].y = row_displays[i].init_y;
+      if(row_displays[i].timeoutId != null){
+        clearTimeout(row_displays[i].timeoutId);
+      }
+      row_displays[i].setText(rows[i]);
+      row_displays[i].show();
+    }
+  } else {
+    // do a hard reset and clear everything out
+    for (var i = 0; i < row_displays.length; i++) {
+      row_displays[i].speed_x = CLOCK_TEXT_SPEED_X;
+      row_displays[i].reset(hard_reset);
+    }
+  }
+
+  reset_commands();
+}
+
+let last_draw_time = null;
+const next_minute_boundary_secs = 10;
+
+function display_time(date){
+  if(date.getSeconds() > 60 - next_minute_boundary_secs){
+    console.log("forwarding to next minute");
+    return new Date(date.getTime() + next_minute_boundary_secs * 1000);
+  } else {
+    return date;
   }
 }
 
 function draw_clock(){
-  //console.log("draw_clock");
-  date = new Date();
-  rows = date_formatter.formatDate(date);
-  var i;
-  for (i = 0; i < rows.length; i++) {
+  var date = new Date();
+
+  // we don't want the time to be displayed
+  // and then immediately be trigger another time
+  if(last_draw_time != null &&
+      Date.now() - last_draw_time.getTime() < next_minute_boundary_secs * 1000 &&
+      has_commands() ){
+    console.log("skipping draw clock");
+    return;
+  } else {
+    last_draw_time = date;
+  }
+  reset_commands();
+  date = display_time(date);
+  console.log("draw_clock:" + last_draw_time.toISOString() + " display:" + date.toISOString());
+  // for debugging only
+  //date.setMinutes(37);
+  var rows = date_formatter.formatDate(date);
+  var display;
+  for (var i = 0; i < rows.length; i++) {
     display = row_displays[i];
-    txt = rows[i];
+    var txt = rows[i];
+    //console.log(i + "->" + txt);
     display_row(display,txt);
   }
-  // If the dateformatter has not returned enough 
+  // If the dateformatter has not returned enough
   // rows then treat the reamining rows as empty
-  for (j = i; j < row_displays.length; j++) {
+  for (var j = i; j < row_displays.length; j++) {
     display = row_displays[j];
+    //console.log(i + "->''(empty)");
     display_row(display,'');
   }
+  next_command();
   //console.log(date);
 }
 
 function display_row(display,txt){
-  if(display.txt == ''){
-    display.setTextXPosition(txt,240);
-    display.moveToX(20);
-  } else if(txt != display.txt){
-    display.moveToX(-100);
-    display.onFinished(
-      function(){
-        display.setTextXPosition(txt,240);
-        display.moveToX(20);
-      }
+  if(display == null) {
+    console.log("no display for text:" + txt)
+    return;
+  }
+
+  if(display.txt == null || display.txt == ''){
+    if(txt != '') {
+      command_stack_high_priority.unshift(
+          function () {
+            //console.log("move in new:" + txt);
+            display.onFinished(next_command);
+            display.setTextXPosition(txt, 240);
+            display.moveToX(DISPLAY_TEXT_X);
+          }
+      );
+    }
+  } else if(txt != display.txt && display.txt != null){
+    command_stack_high_priority.push(
+        function(){
+          //console.log("move out:" + txt);
+          display.onFinished(next_command);
+          display.moveToX(-display.txt.length * display.font_size);
+        }
+    );
+    command_stack_low_priority.push(
+        function(){
+          //console.log("move in:" + txt);
+          display.onFinished(next_command);
+          display.setTextXPosition(txt,240);
+          display.moveToX(DISPLAY_TEXT_X);
+        }
     );
   } else {
-    display.setTextXPosition(txt,20);
+    command_stack_high_priority.push(
+        function(){
+          //console.log("move in2:" + txt);
+          display.setTextXPosition(txt,DISPLAY_TEXT_X);
+          next_command();
+        }
+    );
   }
+}
+
+/**
+ * called from load_settings on startup to
+ * set the color scheme to named value
+ */
+function set_colorscheme(colorscheme_name){
+  console.log("setting color scheme:" + colorscheme_name);
+  for (var i=0; i < color_schemes.length; i++) {
+    if(color_schemes[i].name == colorscheme_name){
+      color_scheme_index = i;
+      console.log("match");
+      setColorScheme(color_schemes[color_scheme_index]);
+      break;
+    }
+  }
+}
+
+function set_dateformat(dateformat_name){
+  console.log("setting date format:" + dateformat_name);
+  for (var i=0; i < date_formatters.length; i++) {
+    if(date_formatters[i].name() == dateformat_name){
+      date_formatter_idx = i;
+      date_formatter = date_formatters[date_formatter_idx];
+      console.log("match");
+    }
+  }
+}
+
+const PREFERENCE_FILE = "slidingtext.settings.json";
+/**
+ * Called on startup to set the watch to the last preference settings
+ */
+function load_settings(){
+  try{
+    settings = require("Storage").readJSON(PREFERENCE_FILE);
+    if(settings != null){
+      console.log("loaded:" + JSON.stringify(settings));
+      if(settings.color_scheme != null){
+        set_colorscheme(settings.color_scheme);
+      }
+      if(settings.date_format != null){
+        set_dateformat(settings.date_format);
+      }
+    } else {
+      console.log("no settings to load");
+    }
+  } catch(e){
+    console.log("failed to load settings:" + e);
+  }
+}
+
+/**
+ * Called on button press to save down the last preference settings
+ */
+function save_settings(){
+  var settings = {
+    date_format : date_formatter.name(),
+    color_scheme : color_schemes[color_scheme_index].name,
+  };
+  console.log("saving:" + JSON.stringify(settings));
+  require("Storage").writeJSON(PREFERENCE_FILE,settings);
+}
+
+function button1pressed() {
+  changeFormatter();
+  save_settings();
+}
+
+function button3pressed() {
+  console.log("button3pressed");
+  nextColorTheme();
+  reset_clock(true);
+  draw_clock();
+  save_settings();
 }
 
 // The interval reference for updating the clock
 let intervalRef = null;
 
 function clearTimers(){
-  if(intervalRef) {
+  if(intervalRef != null) {
     clearInterval(intervalRef);
     intervalRef = null;
   }
 }
 
 function startTimers(){
-  let date = new Date();
-  let secs = date.getSeconds();
-  let nextMinuteStart = 60 - secs;
+  var date = new Date();
+  var secs = date.getSeconds();
+  var nextMinuteStart = 60 - secs;
   //console.log("scheduling clock draw in " + nextMinuteStart + " seconds");
   setTimeout(scheduleDrawClock,nextMinuteStart * 1000);
   draw_clock();
 }
 
+/**
+ * confirms that a redraw is needed by checking the last redraw time and
+ * the lcd state of the UI
+ * @returns {boolean|*}
+ */
+function shouldRedraw(){
+  return last_draw_time != null &&
+      Date.now() - last_draw_time.getTime() > next_minute_boundary_secs * 1000
+      && Bangle.isLCDOn();
+}
+
 function scheduleDrawClock(){
-  //console.log("scheduleDrawClock");
-  if(intervalRef) clearTimers();
-  intervalRef = setInterval(draw_clock, 60*1000);
-  draw_clock();
+  clearTimers();
+  if (Bangle.isLCDOn()) {
+    console.log("schedule draw of clock");
+    intervalRef = setInterval(() => {
+        if (!shouldRedraw()) {
+          console.log("draw clock callback - skipped redraw");
+        } else {
+          console.log("draw clock callback");
+          draw_clock()
+        }
+      }, 60 * 1000
+    );
+
+    if (shouldRedraw()) {
+      draw_clock();
+    } else {
+      console.log("scheduleDrawClock - skipped redraw");
+    }
+  } else {
+    console.log("scheduleDrawClock - skipped not visible");
+  }
 }
 
 Bangle.on('lcdPower', (on) => {
   if (on) {
     console.log("lcdPower: on");
     Bangle.drawWidgets();
-    reset_clock();
+    reset_clock(false);
     startTimers();
   } else {
     console.log("lcdPower: off");
-    reset_clock();
+    reset_clock(false);
     clearTimers();
   }
 });
+
 Bangle.on('faceUp',function(up){
   //console.log("faceUp: " + up + " LCD: " + Bangle.isLCDOn());
   if (up && !Bangle.isLCDOn()) {
@@ -467,9 +630,17 @@ Bangle.on('faceUp',function(up){
 });
 
 g.clear();
+load_settings();
 Bangle.loadWidgets();
 Bangle.drawWidgets();
+
 startTimers();
 // Show launcher when middle button pressed
 setWatch(Bangle.showLauncher, BTN2,{repeat:false,edge:"falling"});
-setWatch(changeFormatter, BTN1,{repeat:true,edge:"falling"});
+
+
+// Handle button 1 being pressed
+setWatch(button1pressed, BTN1,{repeat:true,edge:"falling"});
+
+// Handle button 3 being pressed
+setWatch(button3pressed, BTN3,{repeat:true,edge:"falling"});

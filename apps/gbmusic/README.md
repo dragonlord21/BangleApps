@@ -16,16 +16,26 @@ Download the [latest Gadgetbridge for Android here](https://f-droid.org/packages
 
 ## Settings
 
-The app can automatically load when you play music and close when the music stops.
-You can change this under `Settings`->`App/Widget Settings`->`Music Controls`.
+You can change these under `Settings`->`App/Widget Settings`->`Music Controls`.
+
+**Auto start**: 
+Automatically load the app when you play music and close when the music stops.
 (If the app opened automatically, it closes after music has been paused for 5 minutes.)
+
+**Simple button**:
+Disable double/triple pressing Button 2: always simply toggle play/pause.
+(For music players which handle multiple button presses themselves.)
 
 ## Controls
 
 ### Buttons
-* Button 1: Volume up (hold to repeat)
-* Button 2: Toggle play/pause, long-press for menu
-* Button 3: Volume down (hold to repeat, but remember that holding for too long resets your watch)
+* Button 1: Volume up
+* Button 2: 
+  - Single press: toggle play/pause 
+  - Double press: next song
+  - Triple press: previous song
+  - Long-press: open application launcher 
+* Button 3: Volume down
 
 ### Touch
 * Left: pause/previous song
